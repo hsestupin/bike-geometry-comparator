@@ -1,0 +1,29 @@
+[project]
+name = "bike-geometry-comparator"
+version = "0.1.0"
+description = "Bike geometries database and comparison tool"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.3.0",
+    "duckdb>=1.4.1",
+    "polars>=1.35.2",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.6,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18.2",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "ruff>=0.14.2",
+]
+
+[project.scripts]
+bgc = "bike_geometry_comparator.main:main"
+
+[tool.uv.build-backend]
+source-exclude = ["tests"]
