@@ -1,0 +1,7 @@
+.title {
+  margin: 0 0 8px 0;
+  padding: 4px 8px;
+  border: var(--border-w) solid var(--c-border);
+  display: inline-block;
+  background: var(--c-track-outside);
+}

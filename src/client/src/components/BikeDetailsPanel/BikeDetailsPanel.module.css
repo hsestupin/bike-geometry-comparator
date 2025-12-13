@@ -1,0 +1,30 @@
+.panel {
+  position: sticky;
+  top: 12px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.title { margin: 0; }
+.close {
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+}
+.dl {
+  margin: 0;
+}
+.row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 2px dashed var(--c-border);
+}
+.row:last-child { border-bottom: none; }
+.body {}

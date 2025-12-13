@@ -1,0 +1,7 @@
+.panel {
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0 var(--shadow-color);
+  border-radius: var(--radius);
+  padding: 12px;
+}

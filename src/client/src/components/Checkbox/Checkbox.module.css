@@ -1,0 +1,30 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.box {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: var(--border-w) solid var(--c-border);
+  background: var(--c-surface);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  position: relative;
+}
+.box:checked { background: var(--c-action); }
+.box:checked::after {
+  content: "✕"; /* cross icon */
+  color: #000;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.box:focus-visible { outline: 2px dashed var(--c-border); outline-offset: 2px; }
+.label { cursor: pointer; }
