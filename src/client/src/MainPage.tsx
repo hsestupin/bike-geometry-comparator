@@ -1,25 +1,26 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Range from './components/Range/Range';
 import BrandFilter from './components/Filters/BrandFilter';
 import BikesTable from './components/BikesTable/BikesTable';
 import BikeDetailsPanel from './components/BikeDetailsPanel/BikeDetailsPanel';
-import { bikes as allBikes, brands as allBrands, stackBounds, reachBounds } from './data/bikes';
 import { Bike } from './types/Bike';
 import styles from './App.module.css';
+import { DataService } from "@/data/dataService";
+import { EMPTY_STATISTICS, Statistics } from "@/types/Statistics";
+import { Bound, equalBounds } from "@/types/Bound";
 
-export default function MainPage() {
-  const [stack, setStack] = useState<[number, number]>([stackBounds.min, stackBounds.max]);
-  const [reach, setReach] = useState<[number, number]>([reachBounds.min, reachBounds.max]);
+type Props = { dataService: DataService };
+
+export default function MainPage(props: Props) {
+  const {dataService} = props;
+  const [allBikes, setAllBikes] = useState<Bike[]>([]);
+  const [allBrands, setAllBrands] = useState<string[]>([]);
+  const [filteredBikes, setFilteredBikes] = useState<Bike[]>([]);
+  const [statistics, setStatistics] = useState<Statistics>(EMPTY_STATISTICS)
+  const [stack, setStack] = useState<Bound>(statistics.stack);
+  const [reach, setReach] = useState<Bound>(statistics.reach);
   const [selectedBrands, setSelectedBrands] = useState<Set<string>>(new Set());
   const [selectedBike, setSelectedBike] = useState<Bike | null>(null);
-
-  const filtered = useMemo(() => {
-    return allBikes.filter(b =>
-      b.stack >= stack[0] && b.stack <= stack[1] &&
-      b.reach >= reach[0] && b.reach <= reach[1] &&
-      (selectedBrands.size === 0 || selectedBrands.has(b.brand))
-    );
-  }, [stack, reach, selectedBrands]);
 
   const toggleBrand = (brand: string) => {
     setSelectedBrands(prev => {
@@ -30,20 +31,47 @@ export default function MainPage() {
   };
 
   const clearAll = () => {
-    setStack([stackBounds.min, stackBounds.max]);
-    setReach([reachBounds.min, reachBounds.max]);
+    setStack(statistics.stack);
+    setReach(statistics.reach);
     setSelectedBrands(new Set());
   };
 
+  useEffect(() => {
+    const brandFilter = selectedBrands.size > 0 ? [...selectedBrands] : undefined;
+    const stackFilter = !equalBounds(statistics.stack, stack) ? stack : undefined;
+    const reachFilter = !equalBounds(statistics.reach, reach) ? reach : undefined;
+    if (brandFilter || stackFilter || reachFilter) {
+      dataService.findBikes(brandFilter, reachFilter, stackFilter).then(setFilteredBikes);
+    } else {
+      setFilteredBikes(allBikes);
+    }
+  }, [allBikes, stack, reach, selectedBrands]);
+
+  useEffect(() => {
+    dataService.brands().then(setAllBrands);
+    dataService.allBikes().then(bikes => {
+      setAllBikes(bikes);
+      setFilteredBikes(bikes);
+    });
+    dataService.statistics().then(statistics => {
+      setStatistics(statistics);
+      setStack(statistics.stack);
+      setReach(statistics.reach);
+    });
+  }, [dataService]);
+
   const appClass = `${styles.app} ${selectedBike ? styles.appWithDetails : ''}`;
+
   return (
     <div className={appClass}>
       <div className={styles.left}>
         <aside className={styles.sidebar} aria-label="Filters sidebar">
           <div className={styles.filtersInner}>
-            <Range min={stackBounds.min} max={stackBounds.max} value={stack} onChange={setStack} label="Stack" unit=" mm" />
-            <Range min={reachBounds.min} max={reachBounds.max} value={reach} onChange={setReach} label="Reach" unit=" mm" />
-            <BrandFilter brands={allBrands} selected={selectedBrands} onToggle={toggleBrand} />
+            <Range min={statistics.stack.min} max={statistics.stack.max} value={stack} onChange={setStack} label="Stack"
+                   unit=" mm"/>
+            <Range min={statistics.reach.min} max={statistics.reach.max} value={reach} onChange={setReach} label="Reach"
+                   unit=" mm"/>
+            <BrandFilter brands={allBrands} selected={selectedBrands} onToggle={toggleBrand}/>
           </div>
           <div className={styles.sidebarFooter}>
             <button className={styles.clearAll} onClick={clearAll}>Clear filters</button>
@@ -52,12 +80,12 @@ export default function MainPage() {
       </div>
       <div className={styles.center}>
         <div className={styles.centerContent}>
-          <BikesTable bikes={filtered} onSelect={setSelectedBike} />
+          <BikesTable bikes={filteredBikes} onSelect={setSelectedBike}/>
         </div>
       </div>
       {selectedBike && (
         <div className={styles.right}>
-          <BikeDetailsPanel bike={selectedBike} onClose={() => setSelectedBike(null)} />
+          <BikeDetailsPanel bike={selectedBike} onClose={() => setSelectedBike(null)}/>
         </div>
       )}
     </div>
