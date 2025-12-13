@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from bike_geometry_comparator.assembly import assemble_all
+from bike_geometry_comparator.assembly import build_geometry_database
 
 
 def main() -> None:
-    assemble_all(Path("data"), Path("build/database.csv"))
+    build_geometry_database(Path("data"), Path("build/database.csv"))
     # validate("hi")
     print("Bike Geometry Comparator")
 
