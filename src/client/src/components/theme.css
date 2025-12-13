@@ -1,0 +1,21 @@
+:root {
+  /* Colors */
+  --c-bg: #ffffff;
+  --c-surface: #ffffff;
+  --c-text: #111111;
+  --c-muted-1: #666666;
+  --c-muted-2: #555555;
+  --c-border: #000000;
+  --c-action: #00c853; /* green */
+  --c-track-outside: #eaeaea; /* range outside */
+  --c-table-th: #f5f5f5;
+
+  /* Sizing & radii */
+  --border-w: 3px;
+  --radius: 8px;
+
+  /* Shadows (neobrutalism offsets) */
+  --shadow-color: #000000;
+  --shadow-offset-sm: 3px;
+  --shadow-offset-lg: 6px;
+}

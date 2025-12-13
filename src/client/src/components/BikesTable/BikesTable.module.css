@@ -1,0 +1,35 @@
+.wrap {}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+}
+.table th, .table td {
+  border: var(--border-w) solid var(--c-border);
+  padding: 12px 8px;
+  text-align: left;
+}
+.table th { background: var(--c-table-th); }
+.sortBtn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.modelBtn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  cursor: pointer;
+}
+.empty {
+  margin-top: 12px;
+  color: var(--c-muted-1);
+}

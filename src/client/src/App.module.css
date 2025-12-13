@@ -1,0 +1,57 @@
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr; /* default: no right panel */
+  gap: 12px;
+}
+.appWithDetails {
+  grid-template-columns: 280px 1fr 360px; /* when right panel open */
+}
+.left {
+  position: sticky;
+  top: 0;
+  align-self: start;
+}
+.sidebar {
+  background: var(--c-surface);
+  border-right: var(--border-w) solid var(--c-border);
+  min-height: 100vh;
+  padding: 16px 12px 12px; /* extra top space */
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+}
+.center {
+  padding: 12px;
+  min-width: 0;
+}
+.centerContent {
+  width: 100%;
+  max-width: 940px; /* adequate width without spanning the entire screen */
+}
+.right { min-width: 0; }
+.panelTitle {
+  margin-bottom: 12px;
+}
+.filtersInner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 auto; /* takes remaining height so footer can stick to bottom */
+}
+.sidebarFooter {
+  margin-top: 12px;
+}
+.clearAll {
+  background: var(--c-action);
+  border: var(--border-w) solid var(--c-border);
+  padding: 8px 12px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .app { grid-template-columns: 260px 1fr; }
+  .appWithDetails { grid-template-columns: 260px 1fr; }
+  .right { display: none; }
+}
