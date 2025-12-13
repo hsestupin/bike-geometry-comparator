@@ -1,27 +1,29 @@
 import styles from './Range.module.css';
+import { Bound } from "@/types/Bound";
 
 type Props = {
   min: number;
   max: number;
-  value: [number, number];
+  value: Bound;
   step?: number;
-  onChange: (value: [number, number]) => void;
+  onChange: (value: Bound) => void;
   label: string;
   unit?: string;
 };
 
-export default function Range({ min, max, value, step = 1, onChange, label, unit = '' }: Props) {
-  const [from, to] = value;
+export default function Range({min, max, value, step = 1, onChange, label, unit = ''}: Props) {
+  const from = value.min;
+  const to = value.max;
   const clamp = (v: number) => Math.min(max, Math.max(min, v));
   const pct = (v: number) => ((v - min) / (max - min)) * 100;
 
   const onFromChange = (v: number) => {
     const next = clamp(v);
-    onChange([Math.min(next, to), to]);
+    onChange({min: Math.min(next, to), max: to});
   };
   const onToChange = (v: number) => {
     const next = clamp(v);
-    onChange([from, Math.max(next, from)]);
+    onChange({min: from, max: Math.max(next, from)});
   };
 
   return (
@@ -48,10 +50,10 @@ export default function Range({ min, max, value, step = 1, onChange, label, unit
         <span className={styles.unit}>{unit}</span>
       </div>
       <div className={styles.sliderWrap}>
-        <div className={styles.track} />
+        <div className={styles.track}/>
         <div
           className={styles.range}
-          style={{ left: `${pct(from)}%`, right: `${100 - pct(to)}%` }}
+          style={{left: `${pct(from)}%`, right: `${100 - pct(to)}%`}}
         />
         <input
           aria-label={`${label} from`}
