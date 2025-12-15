@@ -69,8 +69,8 @@ def format_table(
     lines.append(sep("-"))
 
     # Indicate truncation
-    if max_rows is not None and len(rows) > max_rows:
-        lines.append(f"… {len(rows) - max_rows} more rows not shown …")
+    if max_rows is not None and len(materialized) > max_rows:
+        lines.append(f"… {len(materialized) - max_rows} more rows not shown …")
 
     return "\n".join(lines)
 
