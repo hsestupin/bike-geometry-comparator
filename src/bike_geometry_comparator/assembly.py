@@ -6,15 +6,23 @@ from typing import Any, Dict
 
 import duckdb
 
+from bike_geometry_comparator.database.core import insert_bike_geometry
+
 logger = logging.getLogger(__name__)
 
 
 def build_geometry_database(data_dir: Path, output_csv: Path) -> None:
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     sql_queries: list[str] = _assemble_sql_queries(data_dir, {})
-    final_query = " UNION ALL ".join(sql_queries)
-    logger.info("Final query:\n%s", final_query)
-    duckdb.sql(final_query).write_csv(str(output_csv))
+    for sql_query in sql_queries:
+        insert_bike_geometry(sql_query)
+
+    duckdb.sql("""
+    SELECT 
+        * EXCLUDE (year), 
+        CASE WHEN year == -1 THEN NULL ELSE year END AS year,  
+    FROM bike_geometry
+    """).write_csv(str(output_csv))
 
 
 def _assemble_sql_queries(
@@ -27,15 +35,8 @@ def _assemble_sql_queries(
         else {}
     )
 
-    print(f"merged defaults : {defaults}")
     geometry_data = directory / "geometry.csv"
     if geometry_data.exists():
-        res = _fetchall_with_columns(
-            duckdb,
-            f"(SELECT *, {', '.join([f"'{str(v)}' as {k}" for k, v in defaults.items()])} FROM '{geometry_data}')",
-        )
-        print("DUCKDB\n")
-        print(res)
         return [
             f"(SELECT *, {', '.join([f"'{str(v)}' as {k}" for k, v in defaults.items()])} FROM '{geometry_data}')"
         ]

@@ -12,3 +12,5 @@ vcs.xml
 sqldialects.xml
 modules.xml
 misc.xml
+/db-forest-config.xml
+/data_source_mapping.xml
