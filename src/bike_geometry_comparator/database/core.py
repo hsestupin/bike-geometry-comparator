@@ -23,4 +23,3 @@ def insert_bike_geometry(select_sql: str) -> None:
     except ConstraintException as ex:
         ex.add_note(f"Cannot insert bike geometry data: {insert_sql}")
         raise ex
-
