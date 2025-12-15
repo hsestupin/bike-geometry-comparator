@@ -14,6 +14,7 @@ from bike_geometry_comparator.logging.pretty import format_table
 
 logger = logging.getLogger(__name__)
 
+
 def main() -> None:
     setup_project_root_logging()
     build_path = Path("build")
@@ -26,7 +27,9 @@ def main() -> None:
     logger.info(f"{ColorCodes.OKGREEN}Build succesfully finished{ColorCodes.ENDC}")
 
     rows = duckdb.execute(f"SELECT * FROM '{database_csv}' LIMIT 100").fetchall()
-    columns = [column_name[0] for column_name in duckdb.default_connection().description]
+    columns = [
+        column_name[0] for column_name in duckdb.default_connection().description
+    ]
     logger.info(f"Top 100 rows:\n{format_table(rows, columns, 100)}")
 
 
