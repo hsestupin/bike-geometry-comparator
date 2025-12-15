@@ -20,7 +20,7 @@ def insert_bike_geometry(select_sql: str) -> None:
     logging.debug("Insert sql: %s", insert_sql)
     try:
         duckdb.sql(insert_sql)
-    except ConstraintException:
-        raise ValueError(
-            f"Cannot insert bike geometry data due to constraint violations: {insert_sql}"
-        )
+    except ConstraintException as ex:
+        ex.add_note(f"Cannot insert bike geometry data: {insert_sql}")
+        raise ex
+
