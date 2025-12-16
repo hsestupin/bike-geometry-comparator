@@ -195,10 +195,8 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
                 dedup_sizes.append(s)
         sizes = dedup_sizes
 
-    # Fallback: sometimes size headings are hidden in thead; if no sizes found,
-    # infer the count from the first data row
-    if not sizes and rows:
-        sizes = [f"S{i + 1}" for i in range(len(rows[0][1]))]
+    if not sizes:
+        raise ValueError()
 
     # Helper to normalize metric names: lower-case and spaces -> underscores
     def _norm(name: str) -> str:
