@@ -6,6 +6,7 @@ CREATE TABLE bike_geometry
 ) DEFAULT -1,
     size                  TEXT NOT NULL,
 
+    -- always means horizontal length
     top_tube_length       INTEGER DEFAULT NULL,
     seat_tube_length      INTEGER DEFAULT NULL,
     seat_tube_angle       FLOAT DEFAULT NULL,
