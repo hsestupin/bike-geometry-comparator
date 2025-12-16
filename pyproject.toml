@@ -23,6 +23,7 @@ dev = [
 
 [project.scripts]
 bgc = "bike_geometry_comparator.main:main"
+crawl = "bike_geometry_comparator.geocrawler.main:main"
 
 [tool.uv.build-backend]
 source-exclude = ["tests"]
