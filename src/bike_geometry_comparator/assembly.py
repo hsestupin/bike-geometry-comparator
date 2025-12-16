@@ -25,21 +25,13 @@ def build_geometry_database(data_dir: Path, output_csv: Path) -> None:
     """).write_csv(str(output_csv))
 
 
-def _assemble_sql_queries(
-    directory: Path, parent_defaults: Dict[str, Any]
-) -> list[str]:
+def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> list[str]:
     defaults_config = directory / "defaults.ini"
-    defaults = (
-        parent_defaults | _read_defaults(defaults_config)
-        if defaults_config.exists()
-        else {}
-    )
+    defaults = parent_defaults | _read_defaults(defaults_config) if defaults_config.exists() else {}
 
     geometry_data = directory / "geometry.csv"
     if geometry_data.exists():
-        return [
-            f"(SELECT *, {', '.join([f"'{str(v)}' as {k}" for k, v in defaults.items()])} FROM '{geometry_data}')"
-        ]
+        return [f"(SELECT *, {', '.join([f"'{str(v)}' as {k}" for k, v in defaults.items()])} FROM '{geometry_data}')"]
     else:
         child_queries = []
         for file in listdir(directory):

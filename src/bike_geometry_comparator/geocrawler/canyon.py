@@ -79,35 +79,20 @@ class _CanyonGeometryHTMLParser(HTMLParser):
                 if isinstance(size_val, str):
                     self.sizes.append(size_val)
             elif self._in_tbody:
-                if tag == "tr" and self._class_has(
-                    attr.get("class"), "geometryTable__dataRow"
-                ):
+                if tag == "tr" and self._class_has(attr.get("class"), "geometryTable__dataRow"):
                     self._in_tr = True
                     self._current_metric = None
                     self._current_values = []
-                elif (
-                    self._in_tr
-                    and tag == "div"
-                    and self._class_has(attr.get("class"), "geometryTable__titleInner")
-                ):
+                elif self._in_tr and tag == "div" and self._class_has(attr.get("class"), "geometryTable__titleInner"):
                     # Next span encountered contains the metric label
                     self._in_title_inner = True
                     self._need_metric_span = True
-                elif (
-                    self._in_tr
-                    and tag == "span"
-                    and self._in_title_inner
-                    and self._need_metric_span
-                ):
+                elif self._in_tr and tag == "span" and self._in_title_inner and self._need_metric_span:
                     # First span inside title inner is the metric label
                     # Avoid spans like attribute letters if they come later
                     self._in_metric_span = True
                     self._need_metric_span = False
-                elif (
-                    self._in_tr
-                    and tag == "span"
-                    and self._class_has(attr.get("class"), "geometryTable__sizeData")
-                ):
+                elif self._in_tr and tag == "span" and self._class_has(attr.get("class"), "geometryTable__sizeData"):
                     self._in_value_span = True
 
     def handle_endtag(self, tag: str):
@@ -128,9 +113,7 @@ class _CanyonGeometryHTMLParser(HTMLParser):
                 # finalize row if any metric captured
                 if self._current_metric is not None:
                     origin: str = self._current_origin or "table"
-                    self.rows.append(
-                        (origin, self._current_metric.strip(), self._current_values)
-                    )
+                    self.rows.append((origin, self._current_metric.strip(), self._current_values))
                 self._in_tr = False
                 self._current_metric = None
                 self._current_values = []
@@ -259,9 +242,7 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
             if "frame" in origin_map:
                 base_origin_to_vals[(base, "frame")] = _norm_vals(origin_map["frame"])
             if "components" in origin_map:
-                base_origin_to_vals[(base, "components")] = _norm_vals(
-                    origin_map["components"]
-                )
+                base_origin_to_vals[(base, "components")] = _norm_vals(origin_map["components"])
             # choose whichever origin exists for single-origin bases
             if len(origin_map) == 1:
                 only_vals = next(iter(origin_map.values()))
@@ -281,9 +262,7 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
                     # prefixed column: extract base after known prefix
                     if origin == "frame" and base_or_pref.startswith("frame_"):
                         base = base_or_pref[len("frame_") :]
-                    elif origin == "components" and base_or_pref.startswith(
-                        "components_"
-                    ):
+                    elif origin == "components" and base_or_pref.startswith("components_"):
                         base = base_or_pref[len("components_") :]
                     else:
                         base = base_or_pref

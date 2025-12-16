@@ -12,10 +12,7 @@ def setup_project_root_logging(level: int | None = None) -> logging.Logger:
 
     # Create stdout handler if absent
     def _is_stdout_handler(h: logging.Handler) -> bool:
-        return (
-            isinstance(h, logging.StreamHandler)
-            and getattr(h, "stream", None) is sys.stdout
-        )
+        return isinstance(h, logging.StreamHandler) and getattr(h, "stream", None) is sys.stdout
 
     if not any(_is_stdout_handler(h) for h in logger.handlers):
         handler = logging.StreamHandler(stream=sys.stdout)

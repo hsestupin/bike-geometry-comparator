@@ -11,9 +11,7 @@ def init_bike_geometry_db() -> None:
 
 
 def insert_bike_geometry(select_sql: str) -> None:
-    columns = duckdb.execute(
-        f"SELECT column_name FROM (DESCRIBE {select_sql})"
-    ).fetchall()
+    columns = duckdb.execute(f"SELECT column_name FROM (DESCRIBE {select_sql})").fetchall()
     insert_sql = f"""
     INSERT INTO bike_geometry ({", ".join([col for (col,) in columns])}) {select_sql}
     """
