@@ -46,7 +46,10 @@ class _CanyonGeometryHTMLParser(HTMLParser):
 
     @staticmethod
     def _class_has(class_attr: Optional[str], needle: str) -> bool:
-        return bool(class_attr) and needle in class_attr.split()
+        # Avoid calling split on None to satisfy type-checker
+        if class_attr is None:
+            return False
+        return needle in class_attr.split()
 
     def handle_starttag(self, tag: str, attrs):
         attr = dict(attrs)
@@ -72,9 +75,9 @@ class _CanyonGeometryHTMLParser(HTMLParser):
                 self._in_tbody = True
             elif self._in_thead and tag == "button":
                 # Size headings live in buttons with data-size
-                size = attr.get("data-size")
-                if size:
-                    self.sizes.append(size)
+                size_val = attr.get("data-size")
+                if isinstance(size_val, str):
+                    self.sizes.append(size_val)
             elif self._in_tbody:
                 if tag == "tr" and self._class_has(
                     attr.get("class"), "geometryTable__dataRow"
@@ -124,7 +127,7 @@ class _CanyonGeometryHTMLParser(HTMLParser):
             if tag == "tr" and self._in_tr:
                 # finalize row if any metric captured
                 if self._current_metric is not None:
-                    origin = self._current_origin or "table"
+                    origin: str = self._current_origin or "table"
                     self.rows.append(
                         (origin, self._current_metric.strip(), self._current_values)
                     )
@@ -185,7 +188,12 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
     # handles the case when sizes are collected from multiple tables.
     if sizes:
         seen: set[str] = set()
-        sizes = [s for s in sizes if not (s in seen or seen.add(s))]
+        dedup_sizes: list[str] = []
+        for s in sizes:
+            if s not in seen:
+                seen.add(s)
+                dedup_sizes.append(s)
+        sizes = dedup_sizes
 
     # Fallback: sometimes size headings are hidden in thead; if no sizes found,
     # infer the count from the first data row
@@ -202,6 +210,7 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
     base_order: list[str] = []
     base_to_origin_values: dict[str, dict[str, List[str]]] = {}
 
+    origin: str | None
     for origin, metric, values in rows:
         base = _norm(metric)
         if base not in base_to_origin_values:
@@ -263,6 +272,7 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
         # Emit one row per size index
         for idx, size in enumerate(sizes):
             row: list[str] = [size]
+            base_or_pref: str
             for base_or_pref, origin in column_specs:
                 if origin is None:
                     # single-origin base: use base name stored before stripping prefix
