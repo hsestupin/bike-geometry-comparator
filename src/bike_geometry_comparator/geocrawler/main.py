@@ -29,11 +29,14 @@ def main() -> None:
 
     disable_ssl_certificate_validation()
 
-    html = Path(f"build/{model}.html")
+    build_path = Path("build")
+    build_path.mkdir(exist_ok=True)
+
+    html = Path(build_path / f"{model}.html")
     with urlopen(args.url) as source, open(html, "wb") as target:
         target.write(source.read())
 
-    out_csv = Path(f"build/{model}_geometry.csv")
+    out_csv = Path(build_path / f"{model}_geometry.csv")
     crawl(html, out_csv)
     print(f"CSV written to: {out_csv}")
 
