@@ -31,11 +31,11 @@ def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> l
 
     geometry_data = directory / "geometry.csv"
     if geometry_data.exists():
-        metric_conversions: dict[str, str] = read_ini(directory / "metric_conversions.ini") or {}
+        metric_mappings: dict[str, str] = read_ini(directory / "metric_mappings.ini") or {}
         metric_list = "*"
-        if metric_conversions:
-            exclude_list = metric_conversions.keys()
-            replaced_metrics = [f"{origin} as {as_name}" for (origin, as_name) in metric_conversions.items()]
+        if metric_mappings:
+            exclude_list = metric_mappings.keys()
+            replaced_metrics = [f"{origin} as {as_name}" for (origin, as_name) in metric_mappings.items()]
             metric_list = f"* EXCLUDE ({', '.join(exclude_list)}), {', '.join(replaced_metrics)} "
         return [
             f"(SELECT {metric_list}, {', '.join([f"'{str(v)}' as {k}" for k, v in defaults.items()])} FROM '{geometry_data}')"
