@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 import duckdb
 
-from bike_geometry_comparator.database.core import insert_bike_geometry
+from bike_geometry_comparator.database.core import fetchall_strings, insert_bike_geometry
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +18,25 @@ def build_geometry_database(data_dir: Path, output_csv: Path) -> None:
     for sql_query in sql_queries:
         insert_bike_geometry(sql_query)
 
-    duckdb.sql("""
-    SELECT * REPLACE (
-        CASE WHEN year == -1 THEN NULL ELSE year END AS year
-    ), 
-    FROM bike_geometry
-    """).write_csv(str(output_csv))
+    columns_with_artificial_default = fetchall_strings(
+        duckdb.default_connection(),
+        """
+        SELECT column_name FROM information_schema.columns 
+        WHERE table_name = 'bike_geometry' AND column_default == '-1'
+        """,
+    )
+
+    artificial_default_replacements = ",\n".join(
+        [
+            f"CASE WHEN {column} == -1 THEN NULL ELSE {column} END AS {column}"
+            for column in columns_with_artificial_default
+        ]
+    )
+    final_csv_declaration_query = f"""SELECT * 
+REPLACE ({artificial_default_replacements})
+FROM bike_geometry"""
+    logger.debug(f"Final query to declare database csv:\n{final_csv_declaration_query}")
+    duckdb.sql(final_csv_declaration_query).write_csv(str(output_csv))
 
 
 def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> list[str]:
@@ -53,14 +66,6 @@ def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> l
             if child.is_dir():
                 child_queries += _assemble_sql_queries(child, defaults)
         return child_queries
-
-
-def _fetchall_with_columns(conn, sql):
-    with conn.cursor() as cur:
-        cur.execute(sql)
-        columns = [desc[0] for desc in cur.description] if cur.description else []
-        rows = cur.fetchall()
-        return [dict(zip(columns, row)) for row in rows]
 
 
 def read_ini(file: Path) -> dict[str, str] | None:
