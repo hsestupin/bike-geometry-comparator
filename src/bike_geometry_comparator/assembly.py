@@ -18,9 +18,9 @@ def build_geometry_database(data_dir: Path, output_csv: Path) -> None:
         insert_bike_geometry(sql_query)
 
     duckdb.sql("""
-    SELECT 
-        * EXCLUDE (year), 
-        CASE WHEN year == -1 THEN NULL ELSE year END AS year,  
+    SELECT * REPLACE (
+        CASE WHEN year == -1 THEN NULL ELSE year END AS year
+    ), 
     FROM bike_geometry
     """).write_csv(str(output_csv))
 
