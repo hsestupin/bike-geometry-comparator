@@ -38,7 +38,8 @@ def main() -> None:
     with urlopen(args.url) as source, open(html, "wb") as target:
         target.write(source.read())
 
-    out_csv = csv_arg or Path(build_path / f"{model}_geometry.csv")
+    out_csv = Path(csv_arg or build_path / f"{model}_geometry.csv")
+    out_csv.parent.mkdir(exist_ok=True, parents=True)
     crawl(html, out_csv)
     print(f"CSV written to: {out_csv}")
 

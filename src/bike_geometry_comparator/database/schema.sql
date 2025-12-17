@@ -31,6 +31,8 @@ CREATE TABLE bike_geometry
     stem_length          INTEGER CHECK ( stem_length == -1 OR (stem_length > 9 AND stem_length <= 200)) DEFAULT -1,
     -- in mm
     handlebar_width      INTEGER CHECK ( handlebar_width == -1 OR (handlebar_width >= 200 AND handlebar_width <= 900)) DEFAULT -1,
+    -- some measurments for integrated handlebar including stem length
+    cockpit_dimensions TEXT DEFAULT NULL,
     -- in mm
     crank_length         FLOAT CHECK ( crank_length == -1 OR (crank_length >= 120 AND crank_length <= 200)) DEFAULT -1,
     chainring_size       TEXT DEFAULT NULL,
