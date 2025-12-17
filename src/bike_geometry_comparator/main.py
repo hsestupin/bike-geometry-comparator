@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> None:
-    setup_project_root_logging()
+    setup_project_root_logging(logging.DEBUG)
     build_path = Path("build")
     shutil.rmtree(build_path, ignore_errors=True)
     build_path.mkdir()

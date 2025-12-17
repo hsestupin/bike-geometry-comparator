@@ -22,9 +22,11 @@ def main() -> None:
     )
     parser.add_argument("url")
     parser.add_argument("-m", "--model", required=True, help="Bike model name")
+    parser.add_argument("-c", "--csv", help="Output csv file")
     args = parser.parse_args()
     url = urlparse(args.url)
     model = args.model
+    csv_arg = args.csv
     crawl = find_crawler(url)
 
     disable_ssl_certificate_validation()
@@ -36,7 +38,7 @@ def main() -> None:
     with urlopen(args.url) as source, open(html, "wb") as target:
         target.write(source.read())
 
-    out_csv = Path(build_path / f"{model}_geometry.csv")
+    out_csv = csv_arg or Path(build_path / f"{model}_geometry.csv")
     crawl(html, out_csv)
     print(f"CSV written to: {out_csv}")
 

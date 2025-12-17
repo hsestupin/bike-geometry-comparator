@@ -23,5 +23,26 @@ CREATE TABLE bike_geometry
     standover_height      INTEGER DEFAULT NULL,
     fork_axle_to_crown    INTEGER DEFAULT NULL,
 
+    -- here goes list of some custom bike manufacturers metrics
+
+    -- components
+
+    -- in mm
+    stem_length          INTEGER CHECK ( stem_length == -1 OR (stem_length > 9 AND stem_length <= 200)) DEFAULT -1,
+    -- in mm
+    handlebar_width      INTEGER CHECK ( handlebar_width == -1 OR (handlebar_width >= 200 AND handlebar_width <= 900)) DEFAULT -1,
+    -- in mm
+    crank_length         FLOAT CHECK ( crank_length == -1 OR (crank_length >= 120 AND crank_length <= 200)) DEFAULT -1,
+    chainring_size       TEXT DEFAULT NULL,
+    seat_post_diameter   TEXT DEFAULT NULL,
+    -- in mm
+    seat_post_length     INTEGER CHECK ( seat_post_length == -1 OR (seat_post_length >= 20 AND seat_post_length <= 600)) DEFAULT -1,
+    wheel_size           TEXT DEFAULT NULL,
+
+    -- recommended body height
+    body_height_range   TEXT DEFAULT NULL,
+    -- seat height adjustable range
+    seat_height_range   TEXT DEFAULT NULL,
+
     PRIMARY KEY (brand, model, year, size)
 );

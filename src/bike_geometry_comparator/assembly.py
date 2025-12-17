@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 def build_geometry_database(data_dir: Path, output_csv: Path) -> None:
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     sql_queries: list[str] = _assemble_sql_queries(data_dir, {})
+    logger.debug(f"Final queries built:\n{'\n'.join(sql_queries)}")
     for sql_query in sql_queries:
         insert_bike_geometry(sql_query)
 
@@ -34,9 +35,14 @@ def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> l
         metric_mappings: dict[str, str] = read_ini(directory / "metric_mappings.ini") or {}
         metric_list = "*"
         if metric_mappings:
-            exclude_list = metric_mappings.keys()
-            replaced_metrics = [f"{origin} as {as_name}" for (origin, as_name) in metric_mappings.items()]
-            metric_list = f"* EXCLUDE ({', '.join(exclude_list)}), {', '.join(replaced_metrics)} "
+            exclude_list = [k for (k, v) in metric_mappings.items() if v == "-"]
+            renamed_metrics = [
+                f"{original} as {unified}" for (original, unified) in metric_mappings.items() if unified != "-"
+            ]
+
+            exclude_clause = f"EXCLUDE ({', '.join(exclude_list)})" if exclude_list else ""
+            rename_clause = f"RENAME ({', '.join(renamed_metrics)})" if renamed_metrics else ""
+            metric_list = f"* {exclude_clause} {rename_clause}"
         return [
             f"(SELECT {metric_list}, {', '.join([f"'{str(v)}' as {k}" for k, v in defaults.items()])} FROM '{geometry_data}')"
         ]

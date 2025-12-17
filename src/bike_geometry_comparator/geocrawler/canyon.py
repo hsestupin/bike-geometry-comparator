@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 
 class _CanyonGeometryHTMLParser(HTMLParser):
@@ -138,6 +138,10 @@ class _CanyonGeometryHTMLParser(HTMLParser):
                 self._current_values.append(data.strip())
 
 
+def _angle_to_float(angle: str) -> float:
+    return float(angle.rstrip("°").replace(",", "."))
+
+
 def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> None:
     """Parse Canyon geometry tables (bike + components) from an HTML file and
     write a merged CSV grouped by size.
@@ -182,8 +186,8 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
         raise ValueError()
 
     # Helper to normalize metric names: lower-case and spaces -> underscores
-    def _norm(name: str) -> str:
-        return "_".join(name.strip().lower().split())
+    def _normalize_metric(name: str) -> str:
+        return "_".join(name.strip().lower().split()).replace("-", "_").replace("+", "_plus_")
 
     # Aggregate by normalized metric name and origin
     # base -> {origin: values}
@@ -193,7 +197,7 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
 
     origin: str | None
     for origin, metric, values in rows:
-        base = _norm(metric)
+        base = _normalize_metric(metric)
         if base not in base_to_origin_values:
             base_to_origin_values[base] = {}
             base_order.append(base)
@@ -221,7 +225,7 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
     # Write pivoted CSV: rows are sizes
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     with csv_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(["size", *columns])
 
         size_count = len(sizes)
@@ -250,13 +254,18 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
 
         # Emit one row per size index
         for idx, size in enumerate(sizes):
-            row: list[str] = [size]
+            row: list[Any] = [size]
             base_or_pref: str
             for base_or_pref, origin in column_specs:
                 if origin is None:
                     # single-origin base: use base name stored before stripping prefix
                     base_name = base_or_pref
-                    vals = base_to_single_vals.get(base_name, [""] * size_count)
+                    vals: list[Any] = base_to_single_vals.get(base_name, [""] * size_count)
+                    if base_name == "head_tube_angle" or base_name == "seat_tube_angle":
+                        vals = [_angle_to_float(val) for val in vals]
+                    elif base_name == "crank_length_in_mm":
+                        vals = [float(val.replace(",", ".")) for val in vals]
+
                     row.append(vals[idx] if idx < len(vals) else "")
                 else:
                     # prefixed column: extract base after known prefix
