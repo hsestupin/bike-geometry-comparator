@@ -35,6 +35,3 @@ def fetchall_with_columns(conn, sql) -> list[dict[str, Any]]:
 def fetchall_strings(conn, sql) -> list[str]:
     with conn.cursor() as cur:
         return [res for (res,) in cur.execute(sql).fetchall()]
-        # columns = [desc[0] for desc in cur.description] if cur.description else []
-        # rows = cur.fetchall()
-        # return [dict(zip(columns, row)) for row in rows]
