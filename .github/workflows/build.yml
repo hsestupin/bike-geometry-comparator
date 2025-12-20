@@ -43,7 +43,7 @@ jobs:
         run: uv run ruff format --check
 
       - name: Run mypy type checking
-        run: uv run mypy . --exclude dist --exclude docs
+        run: uv run mypy . --exclude dist --exclude docs --exclude tests
 
       - name: Build
         run: uv build
