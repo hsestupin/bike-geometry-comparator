@@ -2,7 +2,7 @@ from pathlib import Path
 
 import duckdb
 
-from bike_geometry_comparator.database.core import fetchall_strings
+from bike_geometry_comparator.db_utils import fetchall_strings
 
 
 def test_canyon_endurace_exists(geometry_database: Path) -> None:
