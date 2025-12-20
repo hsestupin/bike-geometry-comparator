@@ -5,41 +5,14 @@ from pathlib import Path
 from typing import Any, Dict
 
 import duckdb
+from _duckdb import DuckDBPyConnection
 
-from bike_geometry_comparator.database.core import fetchall_strings, insert_bike_geometry
+import bike_geometry_comparator.database.core as geometry_db
 
 logger = logging.getLogger(__name__)
 
 
-def build_geometry_database(data_dir: Path, output_database: Path) -> None:
-    output_database.parent.mkdir(parents=True, exist_ok=True)
-    sql_queries: list[str] = _assemble_sql_queries(data_dir, {})
-    logger.debug(f"Terminal queries per datasource:\n{'\n'.join(sql_queries)}")
-    for sql_query in sql_queries:
-        insert_bike_geometry(sql_query)
-
-    columns_with_artificial_default = fetchall_strings(
-        duckdb.default_connection(),
-        """
-        SELECT column_name FROM information_schema.columns 
-        WHERE table_name = 'bike_geometry' AND column_default == '-1'
-        """,
-    )
-
-    artificial_default_replacements = ",\n".join(
-        [
-            f"CASE WHEN {column} == -1 THEN NULL ELSE {column} END AS {column}"
-            for column in columns_with_artificial_default
-        ]
-    )
-    database_assembly_terminal_query = f"""SELECT * 
-REPLACE ({artificial_default_replacements})
-FROM bike_geometry"""
-    logger.debug(f"Terminal query to assemble database:\n{database_assembly_terminal_query}")
-    duckdb.sql(database_assembly_terminal_query).write_csv(str(output_database))
-
-
-def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> list[str]:
+def _generate_datasource_queries(directory: Path, parent_defaults: Dict[str, Any]) -> list[str]:
     current_defaults = read_ini(directory / "defaults.ini") or {}
     defaults = parent_defaults | current_defaults
 
@@ -64,7 +37,7 @@ def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> l
         for file in listdir(directory):
             child = directory / file
             if child.is_dir():
-                child_queries += _assemble_sql_queries(child, defaults)
+                child_queries += _generate_datasource_queries(child, defaults)
         return child_queries
 
 
@@ -74,3 +47,30 @@ def read_ini(file: Path) -> dict[str, str] | None:
     config = configparser.ConfigParser(allow_unnamed_section=True)
     config.read(file, encoding="utf-8")
     return {key: value for key, value in config.items(configparser.UNNAMED_SECTION)}
+
+
+def assemble_geometry_database(input_dir: Path, output_file: Path):
+    with duckdb.connect() as con:
+        assembler = _DatabaseFileAssembler(con, input_dir, output_file)
+        assembler.assemble()
+
+
+class _DatabaseFileAssembler:
+    def __init__(self, con: DuckDBPyConnection, input_dir: Path, output_file: Path) -> None:
+        self._con = con
+        self._input_dir = input_dir
+        self._output_file = output_file
+
+    def assemble(self):
+        geometry_db.init_geometry_database(self._con)
+        self._populate_geometry_database()
+
+    def _populate_geometry_database(self) -> None:
+        datasource_queries: list[str] = _generate_datasource_queries(self._input_dir, {})
+        logger.debug(f"Terminal queries per datasource:\n{'\n'.join(datasource_queries)}")
+        for datasource_query in datasource_queries:
+            geometry_db.insert_bike_geometry(self._con, datasource_query)
+
+        database_assembly_terminal_query = geometry_db.generate_fetch_all_sql_query(self._con)
+        logger.debug(f"Terminal query to assemble database:\n{database_assembly_terminal_query}")
+        self._con.sql(database_assembly_terminal_query).write_csv(str(self._output_file))

@@ -1,13 +1,32 @@
 from pathlib import Path
 
-from bike_geometry_comparator.assembly import build_geometry_database
-from bike_geometry_comparator.database.core import init_bike_geometry_db
+import duckdb
+
+from bike_geometry_comparator.database.core import fetchall_strings
 
 
-def test_canyon(tmp_path: Path) -> None:
-    do_test("canyon", tmp_path)
+def test_canyon_endurace_exists(geometry_database: Path) -> None:
+    sizes = fetchall_strings(f"SELECT size FROM '{geometry_database}' WHERE brand = 'Canyon' and model = 'Endurace'")
+    assert all(expected in sizes for expected in ["2XS", "XS", "M", "XL"])
 
 
-def do_test(brand: str, tmp_path: Path) -> None:
-    init_bike_geometry_db()
-    build_geometry_database(Path("data") / brand, tmp_path / "database.csv")
+def test_canyon_aeroad_exists(geometry_database: Path) -> None:
+    sizes = fetchall_strings(f"SELECT size FROM '{geometry_database}' WHERE brand = 'Canyon' and model = 'Aeroad'")
+    assert all(expected in sizes for expected in ["2XS", "XS", "M", "XL"])
+
+
+def test_stack_validity(geometry_database: Path) -> None:
+    (min_stack, max_stack) = duckdb.execute(f"SELECT min(stack), max(stack) FROM '{geometry_database}'").fetchone()
+    assert min_stack > 300
+    assert max_stack < 800
+
+
+def test_reach_validity(geometry_database: Path) -> None:
+    (min_reach, max_reach) = duckdb.execute(f"SELECT min(reach), max(reach) FROM '{geometry_database}'").fetchone()
+    assert min_reach > 300
+    assert max_reach < 550
+
+
+def test_no_mock_data(geometry_database: Path) -> None:
+    year_mock_values = duckdb.execute(f"SELECT year FROM '{geometry_database}' where year < 0").fetchall()
+    assert year_mock_values == []

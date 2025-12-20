@@ -2,26 +2,48 @@ import logging
 from importlib.resources import read_text
 from typing import Any
 
-import duckdb
-from _duckdb import ConstraintException
+from _duckdb import ConstraintException, DuckDBPyConnection
+
+from bike_geometry_comparator.db_utils import fetchall_strings
 
 
-def init_bike_geometry_db() -> None:
+def init_geometry_database(con: DuckDBPyConnection) -> None:
     schema_sql = read_text(__name__, "schema.sql")
-    duckdb.sql(schema_sql)
+    con.sql(schema_sql)
 
 
-def insert_bike_geometry(select_sql: str) -> None:
-    columns = duckdb.execute(f"SELECT column_name FROM (DESCRIBE {select_sql})").fetchall()
+def insert_bike_geometry(con: DuckDBPyConnection, datasource_query: str) -> None:
+    columns = con.execute(f"SELECT column_name FROM (DESCRIBE {datasource_query})").fetchall()
     insert_sql = f"""
-    INSERT INTO bike_geometry ({", ".join([col for (col,) in columns])}) {select_sql}
+    INSERT INTO bike_geometry ({", ".join([col for (col,) in columns])}) {datasource_query}
     """
     logging.debug("Insert sql: %s", insert_sql)
     try:
-        duckdb.sql(insert_sql)
+        con.sql(insert_sql)
     except ConstraintException as ex:
         ex.add_note(f"Cannot insert bike geometry data: {insert_sql}")
         raise ex
+
+
+def generate_fetch_all_sql_query(con: DuckDBPyConnection) -> str:
+    columns_with_artificial_default = fetchall_strings(
+        """SELECT column_name
+FROM information_schema.columns
+WHERE table_name = 'bike_geometry'
+ AND column_default == '-1'""",
+        con,
+    )
+
+    artificial_default_replacements = ",\n".join(
+        [
+            f"CASE WHEN {column} == -1 THEN NULL ELSE {column} END AS {column}"
+            for column in columns_with_artificial_default
+        ]
+    )
+    database_assembly_terminal_query = f"""SELECT * 
+REPLACE ({artificial_default_replacements})
+FROM bike_geometry"""
+    return database_assembly_terminal_query
 
 
 def fetchall_with_columns(conn, sql) -> list[dict[str, Any]]:
@@ -30,8 +52,3 @@ def fetchall_with_columns(conn, sql) -> list[dict[str, Any]]:
         columns = [desc[0] for desc in cur.description] if cur.description else []
         rows = cur.fetchall()
         return [dict(zip(columns, row)) for row in rows]
-
-
-def fetchall_strings(conn, sql) -> list[str]:
-    with conn.cursor() as cur:
-        return [res for (res,) in cur.execute(sql).fetchall()]
