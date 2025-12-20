@@ -4,10 +4,12 @@ import { connectDuckDb } from "@/data/duckDb";
 import { DataType, Field, Table } from "apache-arrow";
 import { Statistics } from "@/types/Statistics";
 import { Bound } from "@/types/Bound";
+import { BikeDetailedInfo } from "@/types/BikeDetailedInfo";
 
 export interface DataService {
   allBikes(): Promise<Bike[]>
   findBikes(brands?: string[], reachBound?: Bound, stackBound?: Bound): Promise<Bike[]>
+  detailedInfo(brand: string, model: string, year: number, size: string): Promise<BikeDetailedInfo>
   brands(): Promise<string[]>
   statistics(): Promise<Statistics>
 }
@@ -52,6 +54,39 @@ export class DuckDbDataService implements DataService {
     const whereClause = whereClauses.join(' AND ');
     const sql = `SELECT * FROM ${this.tableName} WHERE ${whereClause}`;
     return this.runBikesQuery(sql);
+  }
+
+  async detailedInfo(brand: string, model: string, year: number, size: string): Promise<BikeDetailedInfo> {
+    const sql = `SELECT * FROM ${this.tableName} WHERE brand = '${brand}' AND model = '${model}' AND year = ${year} AND size = '${size}'`;
+    const result = await this.connection.query(sql);
+    const data = this.parseResult(result);
+    return {
+      brand: data[0]['brand'] as string,
+      model: data[0]['model'] as string,
+      year: data[0]['year'] as number,
+      size: data[0]['size'] as string,
+      stack: data[0]['stack'] as number,
+      reach: data[0]['reach'] as number,
+      topTubeLength: data[0]['top_tube_length'] as (number | undefined),
+      seatTubeLength: data[0]['seat_tube_length'] as (number | undefined),
+      seatTubeAngle: data[0]['seat_tube_angle'] as (number | undefined),
+      seatPostLength: data[0]['seat_post_length'] as (number | undefined),
+      headTubeAngle: data[0]['head_tube_angle'] as (number | undefined),
+      chainStay: data[0]['chainstay'] as (number | undefined),
+      forkRake: data[0]['fork_rake'] as (number | undefined),
+      wheelbase: data[0]['wheelbase'] as (number | undefined),
+      trail: data[0]['trail'] as (number | undefined),
+      bbDrop: data[0]['bb_drop'] as (number | undefined),
+      frontCenterDistance: data[0]['front_center_distance'] as (number | undefined),
+      headTubeLength: data[0]['head_tube_length'] as (number | undefined),
+      stemLength: data[0]['stem_length'] as (number | undefined),
+      forkLength: data[0]['fork_axle_to_crown'] as (number | undefined),
+      standoverHeight: data[0]['standover_height'] as (number | undefined),
+      wheelSize: data[0]['wheel_size'] as (string | undefined),
+      bodyHeightRange: data[0]['body_height_range'] as (string | undefined),
+      seatHeightRange: data[0]['seat_height_range'] as (string | undefined),
+      seatPostDiameter: data[0]['seat_post_diameter'] as (string | undefined),
+    }
   }
 
   async brands(): Promise<string[]> {

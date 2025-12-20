@@ -25,6 +25,26 @@
   gap: 8px;
   padding: 6px 0;
   border-bottom: 2px dashed var(--c-border);
+  white-space: nowrap;
 }
 .row:last-child { border-bottom: none; }
 .body {}
+
+.moreWrapper {
+  margin-top: 8px;
+}
+
+.toggle {
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.details {
+  margin-top: 8px;
+}
+
+.value {
+  text-align: right;
+}

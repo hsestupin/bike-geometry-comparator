@@ -4,7 +4,7 @@
   gap: 12px;
 }
 .appWithDetails {
-  grid-template-columns: 280px 1fr 360px; /* when right panel open */
+  grid-template-columns: 280px 1fr minmax(auto, 360px); /* when right panel open */
 }
 .left {
   position: sticky;
