@@ -28,17 +28,17 @@ CREATE TABLE bike_geometry
     -- components
 
     -- in mm
-    stem_length          INTEGER CHECK ( stem_length == -1 OR (stem_length > 9 AND stem_length <= 200)) DEFAULT -1,
+    stem_length          INTEGER CHECK ( stem_length == NULL OR (stem_length > 9 AND stem_length <= 200)) DEFAULT NULL,
     -- in mm
-    handlebar_width      INTEGER CHECK ( handlebar_width == -1 OR (handlebar_width >= 200 AND handlebar_width <= 900)) DEFAULT -1,
+    handlebar_width      INTEGER CHECK ( handlebar_width == NULL OR (handlebar_width >= 200 AND handlebar_width <= 900)) DEFAULT NULL,
     -- some measurments for integrated handlebar including stem length
     cockpit_dimensions TEXT DEFAULT NULL,
     -- in mm
-    crank_length         FLOAT CHECK ( crank_length == -1 OR (crank_length >= 120 AND crank_length <= 200)) DEFAULT -1,
+    crank_length         FLOAT CHECK ( crank_length == NULL OR (crank_length >= 120 AND crank_length <= 220)) DEFAULT NULL,
     chainring_size       TEXT DEFAULT NULL,
     seat_post_diameter   TEXT DEFAULT NULL,
     -- in mm
-    seat_post_length     INTEGER CHECK ( seat_post_length == -1 OR (seat_post_length >= 20 AND seat_post_length <= 600)) DEFAULT -1,
+    seat_post_length     INTEGER CHECK ( seat_post_length == NULL OR (seat_post_length >= 20 AND seat_post_length <= 600)) DEFAULT NULL,
     wheel_size           TEXT DEFAULT NULL,
 
     -- recommended body height
