@@ -27,6 +27,22 @@ def test_reach_validity(geometry_database: Path) -> None:
     assert max_reach < 550
 
 
+def test_head_tube_angle_validity(geometry_database: Path) -> None:
+    (min_head_tube_angle, max_head_tube_angle) = duckdb.execute(
+        f"SELECT min(head_tube_angle), max(head_tube_angle) FROM '{geometry_database}'"
+    ).fetchone()
+    assert min_head_tube_angle > 60.0
+    assert max_head_tube_angle < 90.0
+
+
+def test_seat_tube_angle_validity(geometry_database: Path) -> None:
+    (min_seat_tube_angle, max_seat_tube_angle) = duckdb.execute(
+        f"SELECT min(seat_tube_angle), max(seat_tube_angle) FROM '{geometry_database}'"
+    ).fetchone()
+    assert min_seat_tube_angle > 65.0
+    assert max_seat_tube_angle < 90.0
+
+
 def test_no_mock_data(geometry_database: Path) -> None:
     year_mock_values = duckdb.execute(f"SELECT year FROM '{geometry_database}' where year < 0").fetchall()
     assert year_mock_values == []
