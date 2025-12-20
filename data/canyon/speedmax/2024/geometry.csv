@@ -1,0 +1,6 @@
+size,body_height_in_cm,seat_height_in_mm,seat_tube_length_in_mm,top_tube_length_in_mm,head_tube_length_in_mm,head_tube_angle,seat_tube_angle,chainstay_length_in_mm,wheel_base_in_mm,stack_in_mm,reach_in_mm,stand_over_height_in_mm,bottom_bracket_offset_in_mm,armpad_stack_in_mm,armpad_reach_in_mm,cockpit_dimensions_in_mm,crank_length_in_mm,chainring_size,seat_post_length_in_mm,maximum_seat_post_insertion_depth_in_mm,minimum_seat_post_insertion_depth_in_mm,wheel_size,disc_size_in_mm
+XS,≤ 166,613 - 733,480,430,113,72.0,83.3,410,955,482,374,754,52,596 - 626,351 - 462,80-410,165.0,52/36,285,200,80,"27.5""",140 / 140
+S,166 - 174,651 - 771,518,464,115,73.0,83.2,420,988,519,402,791,72,633 - 663,377 - 488,80-410,165.0,52/36,285,200,80,"28""",160 / 140
+M,174 - 186,696 - 846,543,486,140,73.0,83.1,420,1.013,544,420,815,72,657 - 688,398 - 509,95-410,170.0,52/36,335,230,80,"28""",160 / 140
+L,186 - 196,730 - 880,577,514,176,73.0,80.5,420,1.046,578,443,849,72,691 - 722,411 - 522,95-410,170.0,52/36,335,230,80,"28""",160 / 140
+XL,≥ 196,760 - 910,607,544,207,73.0,82.9,420,1.091,608,468,879,72,721 - 752,446 - 557,95-410,172.5,52/36,335,230,80,"28""",160 / 160
