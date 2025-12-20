@@ -1,0 +1,67 @@
+.root {
+    --ink-primary: #b0b0b0;
+    --ink-dark: #444444;
+    --ink-rim: #e0e0e0;
+    --ink-subtle: #dddddd;
+}
+
+.frameFill {
+    fill: none;
+    stroke: var(--ink-primary);
+    stroke-width: 28px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.forkFill {
+    fill: none;
+    stroke: var(--ink-primary);
+    stroke-width: 24px;
+    stroke-linecap: round;
+}
+
+.component {
+    stroke: var(--ink-dark);
+    stroke-width: 14px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.bar {
+    stroke: var(--ink-dark);
+    stroke-width: 12px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tire {
+    stroke: #333;
+    stroke-width: 14px;
+    fill: none;
+}
+
+.rim {
+    stroke: #e5e5e5;
+    stroke-width: 24px;
+    fill: none;
+}
+
+.dimLine {
+    stroke: #555;
+    stroke-width: 1px;
+}
+
+.text {
+    font-family: "Arial", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    fill: #555;
+}
+
+.joint {
+    fill: #fff;
+    stroke: #333;
+    stroke-width: 2px;
+}

@@ -2,6 +2,8 @@ import { useEffect, useId, useState } from 'react';
 import Panel from '@/components/Panel/Panel';
 import styles from './BikeDetailsPanel.module.css';
 import { BikeDetailedInfo } from "@/types/BikeDetailedInfo";
+import BikeShape from "@/components/BikeRenderer/BikeShape";
+import { DEFAULT_GEOMETRY } from "@/components/BikeRenderer/bikeGeometry";
 
 type BikeDetailsPanelProps = {
   bike: BikeDetailedInfo;
@@ -72,7 +74,7 @@ export default function BikeDetailsPanel({bike, onClose}: BikeDetailsPanelProps)
   const toggleExpanded = () => setExpanded(prev => !prev);
 
   return (
-    <Panel className={styles.panel} aria-label="Bike details">
+    <Panel className={`${styles.panel} ${expanded ? styles.expanded : ''}`} aria-label="BikeShape details">
       <div className={styles.header}>
         <h3 className={styles.title}>{bike.brand} {bike.model}</h3>
         <button className={styles.close} onClick={onClose} aria-label="Close">✕</button>
@@ -105,6 +107,27 @@ export default function BikeDetailsPanel({bike, onClose}: BikeDetailsPanelProps)
             </dl>
           </div>
         )}
+      </div>
+      <div className={styles.shape}>
+        <BikeShape
+          geometry={{
+            stack: bike.stack ?? DEFAULT_GEOMETRY.stack,
+            reach: bike.reach ?? DEFAULT_GEOMETRY.reach,
+            headTubeAngle: bike.headTubeAngle ?? DEFAULT_GEOMETRY.headTubeAngle,
+            seatTubeAngle: bike.seatTubeAngle ?? DEFAULT_GEOMETRY.seatTubeAngle,
+            bbDrop: bike.bbDrop ?? DEFAULT_GEOMETRY.bbDrop,
+            chainStay: bike.chainStay ?? DEFAULT_GEOMETRY.chainStay,
+            headTubeLength: bike.headTubeLength ?? DEFAULT_GEOMETRY.headTubeLength,
+            seatTubeLength: bike.seatTubeLength ?? DEFAULT_GEOMETRY.seatTubeLength,
+            seatPostLength: bike.seatPostLength ?? DEFAULT_GEOMETRY.seatPostLength,
+            forkLenght: bike.forkLength ?? DEFAULT_GEOMETRY.forkLenght,
+            forkRake: bike.forkRake ?? DEFAULT_GEOMETRY.forkRake,
+            stemLength: bike.stemLength ?? DEFAULT_GEOMETRY.stemLength,
+            stemAngle: DEFAULT_GEOMETRY.stemAngle,
+            spacers: DEFAULT_GEOMETRY.spacers,
+            wheelRadius: DEFAULT_GEOMETRY.wheelRadius
+          }}
+        />
       </div>
     </Panel>
   );

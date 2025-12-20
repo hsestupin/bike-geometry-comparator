@@ -1,6 +1,10 @@
 .panel {
   position: sticky;
   top: 12px;
+  /* Keep the whole panel within viewport and allow inner areas to scroll */
+  max-height: calc(100vh - 24px);
+  display: flex;
+  flex-direction: column;
 }
 .header {
   display: flex;
@@ -28,7 +32,14 @@
   white-space: nowrap;
 }
 .row:last-child { border-bottom: none; }
-.body {}
+.body {
+  /* The content area that can shrink and host an internal scroller */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  /* prevent outer scroll; inner .details will scroll when expanded */
+  overflow: hidden;
+}
 
 .moreWrapper {
   margin-top: 8px;
@@ -43,8 +54,23 @@
 
 .details {
   margin-top: 8px;
+  /* allow flex child to actually shrink for scrolling */
+  min-height: 0;
+}
+
+/* When expanded, make the details list occupy remaining height and scroll */
+.expanded .details {
+  flex: 1 1 auto;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
 }
 
 .value {
   text-align: right;
+}
+
+/* Ensure BikeShape area remains visible and not squeezed */
+.shape {
+  margin-top: 12px;
+  flex: 0 0 auto; /* don’t grow or shrink */
 }
