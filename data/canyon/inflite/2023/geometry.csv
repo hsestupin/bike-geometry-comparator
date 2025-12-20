@@ -1,0 +1,7 @@
+size,body_height_in_cm,seat_height_in_mm,seat_tube_length_in_mm,top_tube_length_in_mm,head_tube_length_in_mm,head_tube_angle,seat_tube_angle,chainstay_length_in_mm,wheel_base_in_mm,stack_in_mm,reach_in_mm,stand_over_height_in_mm,bottom_bracket_offset_in_mm,stack_plus__in_mm,reach_plus__in_mm,spacer_in_mm,cockpit_dimensions_in_mm,crank_length_in_mm,chainring_size,seat_post_diameter_in_mm,seat_post_length_in_mm,maximum_seat_post_insertion_depth_in_mm,minimum_seat_post_insertion_depth_in_mm,wheel_size,disc_size_in_mm
+XS,≤ 172,673 - 773,482,532,102,71.0,73.5,425,1.000,527,376,783,66,618,433,"27,5",80-420,170.0,40,"27,2",350,207,107,"28""",140 / 140
+S,172 - 178,703 - 803,512,550,119,72.25,73.5,425,1.006,547,388,807,66,637,446,"27,5",80-420,170.0,40,"27,2",350,207,107,"28""",160 / 140
+M,178 - 184,733 - 833,542,562,146,72.5,73.5,425,1.018,572,393,839,64,663,462,"27,5",90-420,172.5,40,"27,2",350,207,107,"28""",160 / 140
+L,184 - 190,763 - 863,572,578,168,72.5,73.5,425,1.034,593,402,859,64,686,481,"27,5",100-440,175.0,40,"27,2",350,207,107,"28""",160 / 140
+XL,190 - 196,793 - 893,602,601,192,72.7,73.5,425,1.055,616,418,883,64,709,497,"27,5",100-440,175.0,40,"27,2",350,207,107,"28""",160 / 160
+2XL,≥ 196,823 - 923,632,617,214,72.7,73.5,425,1.072,637,428,909,64,732,517,"27,5",110-460,175.0,40,"27,2",350,207,107,"28""",160 / 160
