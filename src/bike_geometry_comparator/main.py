@@ -20,10 +20,10 @@ def main() -> None:
     build_path.mkdir()
 
     init_bike_geometry_db()
-    database_csv = build_path / "database.csv"
-    build_geometry_database(Path("data"), database_csv)
+    database_file = build_path / "database.csv"
+    build_geometry_database(Path("data"), database_file)
     logger.info(f"{ColorCodes.OKGREEN}Build succesfully finished{ColorCodes.ENDC}. Top 100 rows:")
-    subprocess.run(["duckdb", "-c", f"SELECT * FROM '{database_csv}' LIMIT 100"])
+    subprocess.run(["duckdb", "-c", f"SELECT * FROM '{database_file}' LIMIT 100"])
 
 
 if __name__ == "__main__":

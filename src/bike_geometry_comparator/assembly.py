@@ -11,10 +11,10 @@ from bike_geometry_comparator.database.core import fetchall_strings, insert_bike
 logger = logging.getLogger(__name__)
 
 
-def build_geometry_database(data_dir: Path, output_csv: Path) -> None:
-    output_csv.parent.mkdir(parents=True, exist_ok=True)
+def build_geometry_database(data_dir: Path, output_database: Path) -> None:
+    output_database.parent.mkdir(parents=True, exist_ok=True)
     sql_queries: list[str] = _assemble_sql_queries(data_dir, {})
-    logger.debug(f"Final queries built:\n{'\n'.join(sql_queries)}")
+    logger.debug(f"Terminal queries per datasource:\n{'\n'.join(sql_queries)}")
     for sql_query in sql_queries:
         insert_bike_geometry(sql_query)
 
@@ -32,11 +32,11 @@ def build_geometry_database(data_dir: Path, output_csv: Path) -> None:
             for column in columns_with_artificial_default
         ]
     )
-    final_csv_declaration_query = f"""SELECT * 
+    database_assembly_terminal_query = f"""SELECT * 
 REPLACE ({artificial_default_replacements})
 FROM bike_geometry"""
-    logger.debug(f"Final query to declare database csv:\n{final_csv_declaration_query}")
-    duckdb.sql(final_csv_declaration_query).write_csv(str(output_csv))
+    logger.debug(f"Terminal query to assemble database:\n{database_assembly_terminal_query}")
+    duckdb.sql(database_assembly_terminal_query).write_csv(str(output_database))
 
 
 def _assemble_sql_queries(directory: Path, parent_defaults: Dict[str, Any]) -> list[str]:
