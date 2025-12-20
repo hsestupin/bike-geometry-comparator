@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Range from './components/Range/Range';
 import BrandFilter from './components/Filters/BrandFilter';
 import BikesTable from './components/BikesTable/BikesTable';
@@ -8,6 +8,7 @@ import styles from './App.module.css';
 import { DataService } from "@/data/dataService";
 import { EMPTY_STATISTICS, Statistics } from "@/types/Statistics";
 import { Bound, equalBounds } from "@/types/Bound";
+import { BikeDetailedInfo } from "@/types/BikeDetailedInfo";
 
 type Props = { dataService: DataService };
 
@@ -20,7 +21,7 @@ export default function MainPage(props: Props) {
   const [stack, setStack] = useState<Bound>(statistics.stack);
   const [reach, setReach] = useState<Bound>(statistics.reach);
   const [selectedBrands, setSelectedBrands] = useState<Set<string>>(new Set());
-  const [selectedBike, setSelectedBike] = useState<Bike | null>(null);
+  const [selectedBike, setSelectedBike] = useState<BikeDetailedInfo | null>(null);
 
   const toggleBrand = (brand: string) => {
     setSelectedBrands(prev => {
@@ -60,6 +61,9 @@ export default function MainPage(props: Props) {
     });
   }, [dataService]);
 
+  const handleSelectedBike = useCallback((bike: Bike) => {
+    dataService.detailedInfo(bike.brand, bike.model, bike.year, bike.size).then(setSelectedBike);
+  }, [])
   const appClass = `${styles.app} ${selectedBike ? styles.appWithDetails : ''}`;
 
   return (
@@ -80,7 +84,7 @@ export default function MainPage(props: Props) {
       </div>
       <div className={styles.center}>
         <div className={styles.centerContent}>
-          <BikesTable bikes={filteredBikes} onSelect={setSelectedBike}/>
+          <BikesTable bikes={filteredBikes} onSelect={handleSelectedBike}/>
         </div>
       </div>
       {selectedBike && (
