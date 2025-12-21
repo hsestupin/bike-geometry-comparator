@@ -9,7 +9,7 @@ import { BikeDetailedInfo } from "@/types/BikeDetailedInfo";
 export interface DataService {
   allBikes(): Promise<Bike[]>
   findBikes(brands?: string[], reachBound?: Bound, stackBound?: Bound): Promise<Bike[]>
-  detailedInfo(brand: string, model: string, year: number, size: string): Promise<BikeDetailedInfo>
+  detailedInfo(brand: string, model: string, year: number | null, size: string): Promise<BikeDetailedInfo>
   brands(): Promise<string[]>
   statistics(): Promise<Statistics>
 }
@@ -56,8 +56,12 @@ export class DuckDbDataService implements DataService {
     return this.runBikesQuery(sql);
   }
 
-  async detailedInfo(brand: string, model: string, year: number, size: string): Promise<BikeDetailedInfo> {
-    const sql = `SELECT * FROM ${this.tableName} WHERE brand = '${brand}' AND model = '${model}' AND year = ${year} AND size = '${size}'`;
+  async detailedInfo(brand: string, model: string, year: number | null, size: string): Promise<BikeDetailedInfo> {
+    let year_filter: string = `year = ${year}`;
+    if (year === null) {
+      year_filter = `year is NULL`
+    }
+    const sql = `SELECT * FROM ${this.tableName} WHERE brand = '${brand}' AND model = '${model}' AND ${year_filter} AND size = '${size}'`;
     const result = await this.connection.query(sql);
     const data = this.parseResult(result);
     return {
