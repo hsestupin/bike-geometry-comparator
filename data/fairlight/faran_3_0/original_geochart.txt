@@ -1,0 +1,22 @@
+Size 51T 54R 54T 56R 56T 58R 58T 61T
+A Top Tube Horizontal 535 549 548 567 567 580 581 595
+B Seat Tube (BB to top ST) 518 531 537 549 557 567 575 594
+C Seat Tube Angle 74 74 74 73.5 73.5 73.5 73.5 73.5
+D Head Tube Angle 71.5 72 72 72 72 72.5 72.5 72.5
+E Chainstay Length 432 432 432 432 432 432 432 432
+F Fork Rake 60 60 60 60 60 60 60 60
+G Wheelbase 1023 1032 1033 1047 1048 1056 1057 1072
+H
+Trail - 650 x 47 = 685mm 51.3 48.2 48.2 48.2 48.2 45.1 45.1 45.1
+Trail - 700 x 38 = 697mm 53.3 50.1 50.1 50.1 50.1 47 47 47
+Trail - 650 x 2.2” = 702mm 54.2 51 51 51 51 47.8 47.8 47.8
+I Bottom Bracket Drop 77 77 77 75 75 75 75 75
+J Front Center Distance 603 612 613 626 627 635 636 651
+K Head Tube Length 124 110 143 131 167 148 185 206
+L Stack 570 558 590 576 611 594 630 650
+M Reach 370 388 378 396 386 404 394 402
+N Standover height (with
+700x45 tyre) - @ 65mm
+forward of BB centre
+786 789 805 808 827 825 845 864
+Fork Length - Axle to Crown 408 408 408 408 408 408 408 408
