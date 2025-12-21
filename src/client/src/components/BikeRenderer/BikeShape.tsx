@@ -1,7 +1,7 @@
-import { DEFAULT_GEOMETRY, Geometry } from "@/components/BikeRenderer/bikeGeometry";
-import { renderBikeShapeSvg } from "@/components/BikeRenderer/bikeSvgRenderer";
+import {DEFAULT_GEOMETRY, Geometry} from "@/components/BikeRenderer/bikeGeometry";
+import {renderBikeShapeSvg} from "@/components/BikeRenderer/bikeSvgRenderer";
 
-import styles from './BikeShape.module.css';
+import styles from './bikeShape.module.css';
 
 type Props = {
   geometry?: Geometry
