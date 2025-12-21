@@ -16,7 +16,7 @@ def _parse_file(input_path: Path, out_csv: Path) -> None:
     sizes = lines[0].split()[1:]
     num_sizes = len(sizes)
 
-    data = {size: {} for size in sizes}
+    data: dict[str, dict] = {size: {} for size in sizes}
 
     mappings = {
         "A": "top_tube_horizontal",
