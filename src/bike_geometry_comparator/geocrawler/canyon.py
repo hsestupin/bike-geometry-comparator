@@ -138,7 +138,10 @@ class _CanyonGeometryHTMLParser(HTMLParser):
                 self._current_values.append(data.strip())
 
 
-def _angle_to_float(angle: str) -> float:
+def _angle_to_float(angle: str) -> float | None:
+    # angle could be a range for some bikes (look Canyon Strive geometry table)
+    if "-" in angle:
+        return None
     return float(angle.rstrip("°").replace(",", "."))
 
 
@@ -195,14 +198,28 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
     base_order: list[str] = []
     base_to_origin_values: dict[str, dict[str, List[str]]] = {}
 
+    def pupulate_metrics(metric_name, values):
+        if metric_name not in base_to_origin_values:
+            base_to_origin_values[metric_name] = {}
+            base_order.append(metric_name)
+        # In case of duplicates inside the same origin, prefer first occurrence
+        base_to_origin_values[metric_name].setdefault(origin, values)
+
     origin: str | None
     for origin, metric, values in rows:
         base = _normalize_metric(metric)
-        if base not in base_to_origin_values:
-            base_to_origin_values[base] = {}
-            base_order.append(base)
-        # In case of duplicates inside the same origin, prefer first occurrence
-        base_to_origin_values[base].setdefault(origin, list(values))
+        if base == "head_tube_angle":
+            # some Canyon's head tube angle (like Strive model) is defined as a range, which can't be converted to float
+            if any("-" in hta for hta in values):
+                pupulate_metrics("head_tube_angle_raw", values)
+            else:
+                pupulate_metrics(base, [_angle_to_float(val) for val in values])
+        elif base == "seat_tube_angle":
+            pupulate_metrics(base, [_angle_to_float(val) for val in values])
+        elif base == "crank_length_in_mm":
+            pupulate_metrics(base, [float(val.replace(",", ".")) for val in values])
+        else:
+            pupulate_metrics(base, list(values))
 
     # Build columns list. If a base appears in both frame and components,
     # create two columns with prefixes; otherwise keep the base as-is.
@@ -261,11 +278,6 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
                     # single-origin base: use base name stored before stripping prefix
                     base_name = base_or_pref
                     vals: list[Any] = base_to_single_vals.get(base_name, [""] * size_count)
-                    if base_name == "head_tube_angle" or base_name == "seat_tube_angle":
-                        vals = [_angle_to_float(val) for val in vals]
-                    elif base_name == "crank_length_in_mm":
-                        vals = [float(val.replace(",", ".")) for val in vals]
-
                     row.append(vals[idx] if idx < len(vals) else "")
                 else:
                     # prefixed column: extract base after known prefix
