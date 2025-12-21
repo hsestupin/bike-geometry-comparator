@@ -1,0 +1,6 @@
+size,body_height_in_cm,seat_height_in_mm,seat_tube_length_in_mm,top_tube_length_in_mm,head_tube_length_in_mm,head_tube_angle,seat_tube_angle,chainstay_length_in_mm,wheel_base_in_mm,stack_in_mm,reach_in_mm,stand_over_height_in_mm,bottom_bracket_offset_in_mm,spacer_in_mm,stem_length_in_mm,handlebar_width_in_mm,crank_length_in_mm,chainring_size,seat_post_diameter_in_mm,dropper_post_travel_in_mm,seat_post_length_in_mm,maximum_seat_post_insertion_depth_in_mm,minimum_seat_post_insertion_depth_in_mm,wheel_size,disc_size_in_mm,front_fork_travel_in_mm,rear_suspension_travel_in_mm,fitting_length
+XS,≤ 168,590 - 750,375,572,100,64.0,76.5,429,1.184,612,425,738,36,30,40,760,170.0,32,"34,9",150,417,250,90,"29""/27.5""",203 / 180,150,140,210X55
+S,163 - 177,635 - 785,400,599,110,64.0,76.5,429,1.213,621,450,752,36,30,40,760,170.0,32,"34,9",170,457,270,120,"29""/27.5""",203 / 180,150,140,210X55
+M,172 - 185,680 - 830,415,626,120,64.0,76.5,429,1.243,630,475,747,36,30,40,780,170.0,32,"34,9",200,517,300,150,"29""/27.5""",203 / 203,150,140,210X55
+L,180 - 194,710 - 860,445,653,130,64.0,76.5,429,1.272,639,500,756,36,30,40,780,170.0,32,"34,9",200,517,300,150,"29""/27.5""",203 / 203,150,140,210X55
+XL,≥ 189,750 - 900,455,680,140,64.0,76.5,429,1.301,648,525,762,36,30,40,780,170.0,32,"34,9",230,587,340,190,"29""/27.5""",203 / 203,150,140,210X55
