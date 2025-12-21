@@ -5,20 +5,20 @@ from urllib.parse import urlparse
 from urllib.request import urlopen
 
 
-def find_crawler(url):
+def find_page_parser(url):
     match url.netloc:
         case "www.canyon.com":
-            from .canyon import crawl
+            from .canyon import parse_page
 
-            return crawl
+            return parse_page
         case _:
-            raise ValueError(f"No crawler found for {url.netloc}")
+            raise ValueError(f"No parser found for {url.netloc}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        prog="GeometryCrawler",
-        description="Web crawler which parses geometry data from the web page",
+        prog="GeometryWebscraper",
+        description="Web scraper which parses geometry data from the web page",
     )
     parser.add_argument("url")
     parser.add_argument("-m", "--model", required=True, help="Bike model name")
@@ -27,7 +27,7 @@ def main() -> None:
     url = urlparse(args.url)
     model = args.model
     csv_arg = args.csv
-    crawl = find_crawler(url)
+    parse_page = find_page_parser(url)
 
     disable_ssl_certificate_validation()
 
@@ -40,7 +40,7 @@ def main() -> None:
 
     out_csv = Path(csv_arg or build_path / f"{model}_geometry.csv")
     out_csv.parent.mkdir(exist_ok=True, parents=True)
-    crawl(html, out_csv)
+    parse_page(html, out_csv)
     print(f"CSV written to: {out_csv}")
 
 

@@ -289,5 +289,5 @@ def write_canyon_geometry_csv(html_path: str | Path, csv_path: str | Path) -> No
             writer.writerow(row)
 
 
-def crawl(html: Path, out_csv: Path) -> None:
+def parse_page(html: Path, out_csv: Path) -> None:
     write_canyon_geometry_csv(html, out_csv)

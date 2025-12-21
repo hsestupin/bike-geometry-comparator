@@ -23,7 +23,8 @@ dev = [
 
 [project.scripts]
 bgc = "bike_geometry_comparator.main:main"
-crawl = "bike_geometry_comparator.geocrawler.main:main"
+ingest = "bike_geometry_comparator.ingest.webscraper.main:main"
+ingest_fairlight = "bike_geometry_comparator.ingest.fairlight:main"
 
 [tool.uv.build-backend]
 source-exclude = ["tests"]
