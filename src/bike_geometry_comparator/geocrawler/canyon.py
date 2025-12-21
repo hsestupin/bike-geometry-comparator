@@ -139,9 +139,6 @@ class _CanyonGeometryHTMLParser(HTMLParser):
 
 
 def _angle_to_float(angle: str) -> float | None:
-    # angle could be a range for some bikes (look Canyon Strive geometry table)
-    if "-" in angle:
-        return None
     return float(angle.rstrip("°").replace(",", "."))
 
 
