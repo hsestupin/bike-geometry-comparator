@@ -2,7 +2,7 @@ import configparser
 import logging
 from os import listdir
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 import duckdb
 from _duckdb import DuckDBPyConnection
@@ -12,13 +12,14 @@ import bike_geometry_comparator.database.core as geometry_db
 logger = logging.getLogger(__name__)
 
 
-def _generate_datasource_queries(directory: Path, parent_defaults: Dict[str, Any]) -> list[str]:
-    current_defaults = read_ini(directory / "defaults.ini") or {}
-    defaults = parent_defaults | current_defaults
+def _generate_datasource_queries(
+    directory: Path, parent_defaults: dict[str, Any], parent_mappings: dict[str, str]
+) -> list[str]:
+    metric_defaults = parent_defaults | (read_ini(directory / "defaults.ini") or {})
+    metric_mappings = parent_mappings | (read_ini(directory / "metric_mappings.ini") or {})
 
     geometry_data = directory / "geometry.csv"
     if geometry_data.exists():
-        metric_mappings: dict[str, str] = read_ini(directory / "metric_mappings.ini") or {}
         metric_list = "*"
         if metric_mappings:
             exclude_list = [k for (k, v) in metric_mappings.items() if v == "-"]
@@ -30,14 +31,14 @@ def _generate_datasource_queries(directory: Path, parent_defaults: Dict[str, Any
             rename_clause = f"RENAME ({', '.join(renamed_metrics)})" if renamed_metrics else ""
             metric_list = f"* {exclude_clause} {rename_clause}"
         return [
-            f"(SELECT {metric_list}, {', '.join([f"'{str(v)}' as {k}" for k, v in defaults.items()])} FROM '{geometry_data}')"
+            f"(SELECT {metric_list}, {', '.join([f"'{str(v)}' as {k}" for k, v in metric_defaults.items()])} FROM '{geometry_data}')"
         ]
     else:
         child_queries = []
         for file in listdir(directory):
             child = directory / file
             if child.is_dir():
-                child_queries += _generate_datasource_queries(child, defaults)
+                child_queries += _generate_datasource_queries(child, metric_defaults, metric_mappings)
         return child_queries
 
 
@@ -66,7 +67,7 @@ class _DatabaseFileAssembler:
         self._populate_geometry_database()
 
     def _populate_geometry_database(self) -> None:
-        datasource_queries: list[str] = _generate_datasource_queries(self._input_dir, {})
+        datasource_queries: list[str] = _generate_datasource_queries(self._input_dir, {}, {})
         logger.debug(f"Terminal queries per datasource:\n{'\n'.join(datasource_queries)}")
         for datasource_query in datasource_queries:
             geometry_db.insert_bike_geometry(self._con, datasource_query)
