@@ -46,6 +46,10 @@ class SpecializedGeometryHTMLParser(HTMLParser):
         # Let's replace any non-alphanumeric with underscore and then collapse
         name = re.sub(r"[^a-z0-9]", "_", name)
         name = re.sub(r"_+", "_", name)
+        if name == "b_b_height":
+            name = "bb_height"
+        elif name == "b_b_drop":
+            name = "bb_drop"
         return name.strip("_")
 
     def handle_endtag(self, tag):

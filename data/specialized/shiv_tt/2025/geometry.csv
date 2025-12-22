@@ -1,0 +1,5 @@
+size,handlebar_width,stem_length,seatpost_length,effective_reach_to_center_of_pad_rearward_position,effective_stack_to_pad_holder_highest_position,trail,stack,fork_length_full,top_tube_length_horizontal,seat_tube_length,reach,head_tube_angle,bb_drop,front_center,head_tube_length,chain_stay_length,effective_stack_to_pad_holder_lowest_position,bike_stand_over_height,effective_reach_to_center_of_pad_forward_position,bb_height,wheelbase,fork_rake_offset,seat_tube_angle
+XS,400,75,390,436,680,70,485,363,512,504,378,71,70,573,90,410,535,769,464,269,972,45,74.5
+S,400,75,390,448,690,63,495,363,527,564,390,72,72,579,95,410,545,802,476,270,978,45,74.5
+M,400,75,390,463,690,63,495,363,538,563,405,72,72,594,95,410,545,802,491,270,993,45,75
+L,400,75,390,478,690,63,495,363,546,562,420,72,72,609,95,410,545,802,506,270,1008,45,75.75
