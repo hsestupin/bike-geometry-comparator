@@ -1,0 +1,14 @@
+Write a HTML page parser which recognizes bikes geometry table format and saves this geometry data in a CSV file.
+The result should be a function in the module
+bike_geometry_comparator/ingest/webscraper/specialized.py
+which accepts 2 parameters: path to HTML file to parse and output csv file path
+
+As an example consider this HTML file: build/tarmac.html
+
+Some hints:
+- if original geometry chart has sizes as columns they should be pivoted. Sizes should be represented like other metics columns
+in the resulting CSV
+- geometry metrics should be lower-case letters, spaces replaced by underscore
+- "mm" suffix of metrics values should be cut
+- values of metrics which represent angles should be cleaned ('°' suffix cut and comma replaced by dot)
+- csv newline separator should be `\n` without CR character

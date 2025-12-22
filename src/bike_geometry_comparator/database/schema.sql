@@ -40,6 +40,7 @@ CREATE TABLE bike_geometry
     -- in mm
     seat_post_length     INTEGER CHECK ( seat_post_length == NULL OR (seat_post_length >= 20 AND seat_post_length <= 600)) DEFAULT NULL,
     wheel_size           TEXT DEFAULT NULL,
+    saddle_width         INTEGER CHECK ( saddle_width == NULL OR (saddle_width >= 50 AND saddle_width <= 300)) DEFAULT NULL,
 
     -- recommended body height
     body_height_range   TEXT DEFAULT NULL,
