@@ -60,9 +60,6 @@ export function calculateGeometry(
     y: steerTop.y + geometry.stemLength * Math.sin(stemAbsRad)
   };
 
-  const currentSlope = Math.atan2(frontHub.y - rearHub.y, frontHub.x - rearHub.x);
-  console.log(currentSlope)
-
   const groundY = rearHub.y - geometry.wheelRadius;
   const wheelBase = Math.hypot(frontHub.x - rearHub.x, frontHub.y - rearHub.y);
   const trail = (geometry.wheelRadius * Math.cos(geometry.headTubeAngle * D2R) - geometry.forkRake) / Math.sin(geometry.headTubeAngle * D2R);
