@@ -21,15 +21,15 @@ export function calculateGeometry(
     y: headTubeBottomPoint.y + (headTubeTopPoint.y - headTubeBottomPoint.y) * 0.15
   };
 
-  const rakeRad = (-geometry.headTubeAngle + 90) * D2R;
-  let forkHub = {
-    x: headTubeBottomPoint.x + geometry.forkLength * Math.cos(headTubeRad) + geometry.forkRake * Math.cos(rakeRad),
-    y: headTubeBottomPoint.y + geometry.forkLength * Math.sin(headTubeRad) + geometry.forkRake * Math.sin(rakeRad)
-  };
-
   let rearHub = {
     x: -Math.sqrt(Math.max(0, geometry.chainStay * geometry.chainStay - geometry.bbDrop * geometry.bbDrop)),
     y: geometry.bbDrop
+  };
+
+  const rakeRad = (-geometry.headTubeAngle + 90) * D2R;
+  let frontHub = {
+    x: headTubeBottomPoint.x + (headTubeBottomPoint.y - rearHub.y) * Math.cos(headTubeRad) + geometry.forkRake * Math.cos(rakeRad),
+    y: rearHub.y
   };
 
   const seatTubeRad = (180 - geometry.seatTubeAngle) * D2R;
@@ -60,25 +60,13 @@ export function calculateGeometry(
     y: steerTop.y + geometry.stemLength * Math.sin(stemAbsRad)
   };
 
-  const currentSlope = Math.atan2(forkHub.y - rearHub.y, forkHub.x - rearHub.x);
-  const tilt = -currentSlope;
-  const pivot = basePoint;
-
-  headTubeTopPoint = rotate(headTubeTopPoint, pivot, tilt);
-  headTubeBottomPoint = rotate(headTubeBottomPoint, pivot, tilt);
-  headTubeJoin = rotate(headTubeJoin, pivot, tilt);
-  forkHub = rotate(forkHub, pivot, tilt);
-  rearHub = rotate(rearHub, pivot, tilt);
-  seatTubeTopPont = rotate(seatTubeTopPont, pivot, tilt);
-  effectiveTopTubeLeftPoint = rotate(effectiveTopTubeLeftPoint, pivot, tilt);
-  saddlePoint = rotate(saddlePoint, pivot, tilt);
-  steerTop = rotate(steerTop, pivot, tilt);
-  stemEnd = rotate(stemEnd, pivot, tilt);
+  const currentSlope = Math.atan2(frontHub.y - rearHub.y, frontHub.x - rearHub.x);
+  console.log(currentSlope)
 
   const groundY = rearHub.y - geometry.wheelRadius;
-  const wheelBase = Math.hypot(forkHub.x - rearHub.x, forkHub.y - rearHub.y);
+  const wheelBase = Math.hypot(frontHub.x - rearHub.x, frontHub.y - rearHub.y);
   const trail = (geometry.wheelRadius * Math.cos(geometry.headTubeAngle * D2R) - geometry.forkRake) / Math.sin(geometry.headTubeAngle * D2R);
-  const frontCenterLength = Math.hypot(forkHub.x - basePoint.x, forkHub.y - basePoint.y);
+  const frontCenterLength = Math.hypot(frontHub.x - basePoint.x, frontHub.y - basePoint.y);
   const effectiveTopTubeLength = Math.hypot(headTubeTopPoint.x - effectiveTopTubeLeftPoint.x, headTubeTopPoint.y - effectiveTopTubeLeftPoint.y);
   const midTTY = (headTubeTopPoint.y + seatTubeTopPont.y) / 2;
   const standover = midTTY - groundY;
@@ -89,7 +77,7 @@ export function calculateGeometry(
       headTubeTopPoint: headTubeTopPoint,
       headTubeBottomPoint: headTubeBottomPoint,
       headTubeJoin: headTubeJoin,
-      forkHub: forkHub,
+      frontHub: frontHub,
       rearHub: rearHub,
       seatTubeTopPont: seatTubeTopPont,
       effectiveTopTubeLeftPoint: effectiveTopTubeLeftPoint,

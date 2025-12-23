@@ -34,7 +34,7 @@ export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssC
 
   const forkPath = `
       M ${p.headTubeBottomPoint.x},${-(p.headTubeBottomPoint.y)}
-      L ${p.forkHub.x},${-(p.forkHub.y)}
+      L ${p.frontHub.x},${-(p.frontHub.y)}
     `;
 
   const svg = `
@@ -53,7 +53,7 @@ export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssC
                 <line x1="-3000" y1="${-(v.groundY)}" x2="3000" y2="${-(v.groundY)}" class="${cssClasses.dimLine}" opacity="0.3"/>
 
                 ${drawWheel(p.rearHub, geometry.wheelRadius, cssClasses)}
-                ${drawWheel(p.forkHub, geometry.wheelRadius, cssClasses)}
+                ${drawWheel(p.frontHub, geometry.wheelRadius, cssClasses)}
 
                 <line x1="${p.seatTubeTopPont.x}" y1="${-(p.seatTubeTopPont.y)}" x2="${p.saddlePoint.x}" y2="${-(p.saddlePoint.y)}" class="${cssClasses.component}"/>
                 <path d="M${p.saddlePoint.x - 40},${-(p.saddlePoint.y)} L${p.saddlePoint.x + 80},${-(p.saddlePoint.y)}" class="${cssClasses.component}" stroke-width="12"/>
@@ -75,11 +75,11 @@ export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssC
                     ${arrow(p.effectiveTopTubeLeftPoint.x, p.headTubeTopPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, 'toptube length', 140, 20, 'horiz', true, cssClasses)}
                     ${arrow(p.basePoint.x, p.basePoint.y, p.seatTubeTopPont.x, p.seatTubeTopPont.y, 'seattube length', -60, 20, 'aligned', false, cssClasses)}
                     ${arrow(p.headTubeBottomPoint.x, p.headTubeBottomPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, 'head tube length', 60, 20, 'aligned', false, cssClasses)}
-                    ${arrow(p.rearHub.x, p.rearHub.y, p.forkHub.x, p.rearHub.y, 'wheelbase', -150, 20, 'horiz', false, cssClasses)}
+                    ${arrow(p.rearHub.x, p.rearHub.y, p.frontHub.x, p.rearHub.y, 'wheelbase', -150, 20, 'horiz', false, cssClasses)}
                     ${arrow(p.rearHub.x, p.rearHub.y, p.basePoint.x, p.rearHub.y, 'rear center', -100, 20, 'horiz', false, cssClasses)}
-                    ${arrow(p.basePoint.x, p.rearHub.y, p.forkHub.x, p.rearHub.y, 'front center', -100, 20, 'horiz', false, cssClasses)}
+                    ${arrow(p.basePoint.x, p.rearHub.y, p.frontHub.x, p.rearHub.y, 'front center', -100, 20, 'horiz', false, cssClasses)}
                     ${angleArc(p.basePoint.x, p.basePoint.y, 100, Math.PI, Math.PI - (geometry.seatTubeAngle * D2R), 'seat tube angle', cssClasses)}
-                    ${angleArc(p.forkHub.x, p.rearHub.y, 120, Math.PI, Math.PI - (geometry.headTubeAngle * D2R), 'head tube angle', cssClasses)}
+                    ${angleArc(p.frontHub.x, p.rearHub.y, 120, Math.PI, Math.PI - (geometry.headTubeAngle * D2R), 'head tube angle', cssClasses)}
                 </g>
             </svg>
         `;
