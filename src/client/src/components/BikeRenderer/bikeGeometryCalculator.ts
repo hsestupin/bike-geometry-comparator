@@ -23,8 +23,8 @@ export function calculateGeometry(
 
   const rakeRad = (-geometry.headTubeAngle + 90) * D2R;
   let forkHub = {
-    x: headTubeBottomPoint.x + geometry.forkLenght * Math.cos(headTubeRad) + geometry.forkRake * Math.cos(rakeRad),
-    y: headTubeBottomPoint.y + geometry.forkLenght * Math.sin(headTubeRad) + geometry.forkRake * Math.sin(rakeRad)
+    x: headTubeBottomPoint.x + geometry.forkLength * Math.cos(headTubeRad) + geometry.forkRake * Math.cos(rakeRad),
+    y: headTubeBottomPoint.y + geometry.forkLength * Math.sin(headTubeRad) + geometry.forkRake * Math.sin(rakeRad)
   };
 
   let rearHub = {

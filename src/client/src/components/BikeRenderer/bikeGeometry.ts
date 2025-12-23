@@ -9,7 +9,7 @@ export type Geometry = {
   chainStay: number;
   headTubeLength: number;
   seatTubeLength: number;
-  forkLenght: number;
+  forkLength: number;
   forkRake: number;
   stemLength: number;
   stemAngle: number;
@@ -27,7 +27,7 @@ export const DEFAULT_GEOMETRY = {
   chainStay: 420,
   headTubeLength: 160,
   seatTubeLength: 500,
-  forkLenght: 371,
+  forkLength: 371,
   forkRake: 53,
   stemLength: 100,
   stemAngle: -7,

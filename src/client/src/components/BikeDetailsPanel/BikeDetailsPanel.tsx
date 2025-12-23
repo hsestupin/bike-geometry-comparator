@@ -120,7 +120,7 @@ export default function BikeDetailsPanel({bike, onClose}: BikeDetailsPanelProps)
             headTubeLength: bike.headTubeLength ?? DEFAULT_GEOMETRY.headTubeLength,
             seatTubeLength: bike.seatTubeLength ?? DEFAULT_GEOMETRY.seatTubeLength,
             seatPostLength: bike.seatPostLength ?? DEFAULT_GEOMETRY.seatPostLength,
-            forkLenght: bike.forkLength ?? DEFAULT_GEOMETRY.forkLenght,
+            forkLength: bike.forkLength ?? DEFAULT_GEOMETRY.forkLength,
             forkRake: bike.forkRake ?? DEFAULT_GEOMETRY.forkRake,
             stemLength: bike.stemLength ?? DEFAULT_GEOMETRY.stemLength,
             stemAngle: DEFAULT_GEOMETRY.stemAngle,
