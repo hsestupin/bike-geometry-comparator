@@ -1,0 +1,7 @@
+size,crank_length,handlebar_width,stem_length,saddle_width,seatpost_length,stack,reach,head_tube_length,head_tube_angle,bb_drop,trail,fork_length_full,fork_rake_offset,front_center,chainstay_length,wheelbase,top_tube_length_horizontal,bike_standover_height,seat_tube_length,seat_tube_angle
+49,165,380,60,155,330,563,365,90,70,85,72,391,55,604,430,1019,521,700,400,74.5
+52,170,400,70,155,330,578,374,104,70.5,85,68,391,55,613,430,1031,537,725,430,74
+54,172.5,420,80,143,380,592,387,116,71,85,65,391,55,626,430,1041,556,754,470,74
+56,172.5,420,90,143,380,610,400,135,71,85,65,391,55,645,430,1060,575,779,500,74
+58,175,440,100,143,380,634,412,161,71,85,65,391,55,665,430,1081,593,805,530,74
+61,175,440,100,143,380,659,425,187,71,85,65,391,55,686,430,1102,613,832,560,74
