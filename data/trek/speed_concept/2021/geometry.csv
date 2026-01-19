@@ -1,0 +1,5 @@
+size,wheel_size,seat_tube,seat_tube_angle,head_tube_length,head_angle,effective_top_tube,bottom_bracket_drop,chainstay_length,_offset,trail,wheelbase,standover,frame_reach,frame_stack,saddle_rail_height_min_w_short_mast_,saddle_rail_height_max_w_short_mast_,saddle_rail_height_min_w_tall_mast_,saddle_rail_height_max_w_tall_mast_
+S,700c,499,78.0,65,72.2,495,80,410,45,61,967,760,390,492,55.9,66.6,64.9,75.6
+M,700c,525,78.0,90,72.5,518,80,410,45,60,995,785,416,517,58.0,69.2,67.0,78.2
+L,700c,549,78.0,115,72.5,541,80,410,45,60,1020,808,426,541,60.4,71.5,69.4,80.5
+XL,700c,574,78.0,140,72.5,565,80,410,45,60,1047,831,445,565,62.8,74.0,71.8,83.0
