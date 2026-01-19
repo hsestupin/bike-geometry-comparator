@@ -111,8 +111,8 @@ def _normalize_metric_name(name: str) -> str:
     return name
 
 
-def convert_to_mm(value: str) -> float:
-    return float(value) * 10
+def convert_to_mm(value: str) -> int:
+    return int(float(value) * 10)
 
 
 def _clean_value(metric: str, value: str) -> Any:
@@ -138,7 +138,7 @@ def _clean_value(metric: str, value: str) -> Any:
         "effective_top_tube",
         "bottom_bracket_drop",
         "chainstay_length",
-        "offset",
+        "_offset",
         "trail",
         "wheelbase",
         "standover",
