@@ -25,6 +25,7 @@ dev = [
 bgc = "bike_geometry_comparator.main:main"
 ingest = "bike_geometry_comparator.ingest.webscraper.main:main"
 ingest_fairlight = "bike_geometry_comparator.ingest.fairlight:main"
+ingest_trek = "bike_geometry_comparator.ingest.trek:main"
 
 [tool.uv.build-backend]
 source-exclude = ["tests"]

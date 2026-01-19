@@ -1,5 +1,5 @@
 import logging
-import shutil
+import os
 import subprocess
 from pathlib import Path
 
@@ -13,10 +13,11 @@ logger = logging.getLogger(__name__)
 def main() -> None:
     setup_project_root_logging(logging.DEBUG)
     build_path = Path("build")
-    shutil.rmtree(build_path, ignore_errors=True)
-    build_path.mkdir()
-
     database_file = build_path / "database.csv"
+    if database_file.exists():
+        os.remove(database_file)
+    build_path.mkdir(exist_ok=True)
+
     data_dir = Path("data")
     assemble_geometry_database(data_dir, database_file)
     logger.info(f"{ColorCodes.OKGREEN}Build succesfully finished{ColorCodes.ENDC}. Top 100 rows:")
