@@ -15,6 +15,10 @@ def find_page_parser(url):
             from .specialized import parse_specialized_geometry
 
             return parse_specialized_geometry
+        case "www.giant-bicycles.com":
+            from .giant import parse_giant_geometry
+
+            return parse_giant_geometry
         case _:
             raise ValueError(f"No parser found for {url.netloc}")
 
