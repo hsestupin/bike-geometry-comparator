@@ -1,0 +1,7 @@
+size,seat_tube_length,seat_tube_angle,top_tube_length,head_tube_length,head_tube_angle,fork_rake,trail,wheelbase,chain_stay_length,bottom_bracket_drop,stack,reach,stand_over_height,handlebar_width,stem_length,crank_length,wheel_size
+XS,430,73.5,540,105,71.0,50,68,1013,425,70,511,388,681,640,70,170,
+S,445,73.5,545,130,71.5,50,64.7,1014,425,70,537,386,697,640,80,170,
+M,460,73.0,560,155,72.0,50,61.5,1020,425,70,563,388,719,680,90,170,
+ML,490,73.0,575,180,72.0,50,61.5,1035,425,70,586,396,741,680,90,172.5,
+L,520,72.5,595,200,72.5,50,58.2,1045,425,70,607,403,767,680,100,172.5,
+XL,550,72.5,615,225,72.5,50,58.2,1065,425,70,631,416,795,680,110,175,
