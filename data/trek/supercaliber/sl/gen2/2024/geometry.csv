@@ -1,0 +1,6 @@
+size,wheel_size,seat_tube,seat_tube_angle,effective_seat_tube_angle,head_tube_length,head_angle,effective_top_tube,bottom_bracket_height,bottom_bracket_drop,chainstay_length,_offset,trail,wheelbase,standover,frame_reach,frame_stack
+S,"29""",395,70.5,74.5,90,67.5,571,32.7,46,435,43,109,1113,760,410,590
+M,"29""",420,71.0,74.5,90,67.5,592,32.7,46,435,43,109,1138,772,435,590
+ML,"29""",440,71.0,74.5,90,67.5,605,32.7,46,435,43,109,1153,772,450,590
+L,"29""",460,71.5,74.5,100,67.5,622,32.7,46,435,43,109,1172,772,465,599
+XL,"29""",525,71.5,74.5,125,67.5,663,32.7,46,435,43,109,1217,772,500,622
