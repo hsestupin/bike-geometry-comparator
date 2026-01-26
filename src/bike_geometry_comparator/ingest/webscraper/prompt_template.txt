@@ -12,3 +12,4 @@ in the resulting CSV
 - "mm" suffix of metrics values should be cut
 - values of metrics which represent angles should be cleaned ('°' suffix cut and comma replaced by dot)
 - csv newline separator should be `\n` without CR character
+- invoke any python scripts via `uv` package manager
