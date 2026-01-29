@@ -20,3 +20,13 @@ mypy:
 .PHONY: sync
 sync:
 	@uv sync --locked --all-extras --dev
+
+.PHONY: build
+build:
+	# building database.csv
+	@uv run bgc
+	mkdir -p src/client/public && cp build/database.csv src/client/public
+
+.PHONY: dev
+dev: build
+	@pnpm -C src/client dev
