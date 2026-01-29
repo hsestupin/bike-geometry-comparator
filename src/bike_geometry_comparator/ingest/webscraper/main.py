@@ -19,6 +19,10 @@ def find_page_parser(url):
             from .giant import parse_giant_geometry
 
             return parse_giant_geometry
+        case "www.cube.eu":
+            from .cube import parse_cube_geometry
+
+            return parse_cube_geometry
         case _:
             raise ValueError(f"No parser found for {url.netloc}")
 
