@@ -1,0 +1,7 @@
+size,wheel_size,seat_tube_length,top_tube_horizontal,top_tube_actual,head_tube_angle,seat_tube_angle,standover,head_tube_length,wheelbase,front_center,chain_stay_length,bottom_bracket_drop,bottom_bracket_height,fork_rake,trail,stack,reach
+48,700c,407,533,510,71.3,73.0,712,109,991,588,415,75,270,55,59,530,371
+51,700c,443,544,521,71.4,73.0,742,130,1002,598,415,75,270,55,58,550,376
+54,700c,480,555,533,73.1,73.0,773,143,987,594,415,73,272,45,58,570,381
+56,700c,520,567,547,73.2,73.0,787,164,998,604,415,73,272,45,57,590,387
+58,700c,550,578,560,73.3,73.0,833,187,1011,606,415,70,275,45,56,610,393
+61,700c,590,598,579,73.4,73.0,868,218,1028,623,415,70,275,45,56,640,402

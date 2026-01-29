@@ -1,0 +1,6 @@
+size,wheel_size,seat_tube_length,top_tube_horizontal,head_tube_angle,seat_tube_angle_effective,seat_tube_angle_actual,standover,head_tube_length,wheelbase,front_center,chain_stay_length,bottom_bracket_drop,bottom_bracket_height,fork_rake,trail,stack,reach
+XS,700c,410,533,70.0,73.1,71.4,704,105,1010,601,420,74,278,55,69,534,371
+SM,700c,458,544,71.2,73.1,71.6,745,123,1013,603,420,69,283,55,62,551,377
+MD,700c,505,557,71.2,73.1,71.8,785,150,1029,617,420,67,285,55,62,574,383
+LG,700c,553,572,71.2,73.1,71.9,823,177,1044,633,420,67,285,55,62,600,390
+XL,700c,590,587,71.2,73.1,72.1,857,205,1061,649,420,64,288,55,62,624,397
