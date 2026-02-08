@@ -75,6 +75,7 @@ class CubeGeometryHTMLParser(HTMLParser):
             "bb_height_to_hub",
             "reach",
             "stack",
+            "wheelbase",
         }:
             if " / " in value:
                 # For some frame geometry values are provded in 2 parts
