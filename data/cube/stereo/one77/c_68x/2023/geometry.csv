@@ -1,0 +1,5 @@
+size,seat_tube,top_tube_horizontal,seat_angle,head_tube_angle,chainstays,head_tube,wheelbase,bb_height_to_hub,protrusion_height_80mm,reach,stack,stem_length,handlebar_width,crank_length,length_seat_post,diameter_seatpost,stroke_seatpost,diameter_tire_maximum,width_tire_maximum,rear_suspension_travel
+M,405,589,76.7,63.8,435,103,1229,-27,743 / 747,452,626,40,800,170,452,31.6,150,758,66,170
+L,420,610,76.7,63.8,435,105,1250,-27,740 / 744,472,627,40,800,170,492,31.6,170,758,66,170
+XL,470,633,76.7,63.8,435,115,1274,-27,766 / 770,492,636,50,800,170,492,31.6,170,758,66,170
+XXL,470,659,76.7,63.8,435,135,1297,-27,767 / 771,512,654,50,800,170,552,31.6,200,758,66,170
