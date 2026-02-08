@@ -46,7 +46,7 @@ class CubeGeometryHTMLParser(HTMLParser):
             elif self.in_tbody:
                 if self.current_row:
                     metric_name = self.clean_metric(self.current_row[0])
-                    values = [self.clean_value(v) for v in self.current_row[1:]]
+                    values = [self.clean_value(metric_name, v) for v in self.current_row[1:]]
                     self.metrics[metric_name] = values
         elif tag == "th":
             self.in_th = False
@@ -67,7 +67,23 @@ class CubeGeometryHTMLParser(HTMLParser):
         name = re.sub(r"_+", "_", name)
         return name.strip("_")
 
-    def clean_value(self, value):
+    def clean_value(self, metric_name: str, value: str):
+        if metric_name in {
+            "top_tube_horizontal",
+            "seat_angle",
+            "head_tube_angle",
+            "bb_height_to_hub",
+            "reach",
+            "stack",
+        }:
+            if " / " in value:
+                # For some frame geometry values are provded in 2 parts
+                # because of the fork SAG
+                value_parts = value.split(" / ")
+                assert len(value_parts) == 2
+                # take 2nd value when fork is not suspended
+                value = value_parts[0]
+
         # Remove "mm" suffix
         value = value.replace("mm", "")
         # Remove "°" suffix
