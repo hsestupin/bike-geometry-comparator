@@ -23,6 +23,10 @@ def find_page_parser(url):
             from .cube import parse_cube_geometry
 
             return parse_cube_geometry
+        case "www.scott-sports.com":
+            from .scott import parse_scott_geometry
+
+            return parse_scott_geometry
         case _:
             raise ValueError(f"No parser found for {url.netloc}")
 
