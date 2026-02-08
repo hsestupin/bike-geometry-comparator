@@ -1,9 +1,9 @@
 import csv
 import re
+import ssl
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.request import Request, urlopen
-import ssl
 
 
 class ScottGeometryURLParser(HTMLParser):
