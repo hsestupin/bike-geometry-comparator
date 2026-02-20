@@ -22,6 +22,7 @@ export default function MainPage(props: Props) {
   const [reach, setReach] = useState<Bound>(statistics.reach);
   const [selectedBrands, setSelectedBrands] = useState<Set<string>>(new Set());
   const [selectedBike, setSelectedBike] = useState<BikeDetailedInfo | null>(null);
+  const [pinnedBike, setPinnedBike] = useState<BikeDetailedInfo | null>(null);
 
   const toggleBrand = (brand: string) => {
     setSelectedBrands(prev => {
@@ -64,6 +65,11 @@ export default function MainPage(props: Props) {
   const handleSelectedBike = useCallback((bike: Bike) => {
     dataService.detailedInfo(bike.brand, bike.model, bike.year, bike.size).then(setSelectedBike);
   }, [])
+
+  const handlePinBike = useCallback((bike: BikeDetailedInfo) => {
+    setPinnedBike(prev => prev !== null ? null : bike);
+  }, []);
+
   const appClass = `${styles.app} ${selectedBike ? styles.appWithDetails : ''}`;
 
   return (
@@ -89,7 +95,7 @@ export default function MainPage(props: Props) {
       </div>
       {selectedBike && (
         <div className={styles.right}>
-          <BikeDetailsPanel bike={selectedBike} onClose={() => setSelectedBike(null)}/>
+          <BikeDetailsPanel bike={selectedBike} pinnedBike={pinnedBike} onPin={handlePinBike} onClose={() => setSelectedBike(null)}/>
         </div>
       )}
     </div>

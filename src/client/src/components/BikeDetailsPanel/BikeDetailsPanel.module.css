@@ -13,6 +13,33 @@
   margin-bottom: 8px;
 }
 .title { margin: 0; }
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pinBtn {
+  background: var(--c-surface);
+  border: var(--border-w) solid var(--c-border);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: var(--c-muted-1);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.pinBtn:hover {
+  color: var(--c-text);
+}
+.pinBtn:active {
+  transform: translate(var(--shadow-offset-sm), var(--shadow-offset-sm));
+  box-shadow: 0 0 0 var(--shadow-color);
+}
+.pinBtnActive {
+  background: var(--c-action);
+  color: var(--c-text);
+}
 .close {
   background: var(--c-surface);
   border: var(--border-w) solid var(--c-border);
@@ -31,6 +58,9 @@
   border-bottom: 2px dashed var(--c-border);
   white-space: nowrap;
 }
+.rowComparing {
+  grid-template-columns: 100px 1fr 1fr;
+}
 .row:last-child { border-bottom: none; }
 .body {
   /* The content area that can shrink and host an internal scroller */
@@ -39,6 +69,21 @@
   gap: 4px;
   /* prevent outer scroll; inner .details will scroll when expanded */
   overflow: hidden;
+}
+
+.columnHeaders {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr;
+  gap: 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--c-border);
+}
+
+.columnLabel {
+  text-align: right;
+  font-size: 0.8em;
+  color: var(--c-muted-1, #888);
+  font-weight: 600;
 }
 
 .moreWrapper {
@@ -69,8 +114,12 @@
   text-align: right;
 }
 
-/* Ensure BikeShape area remains visible and not squeezed */
+.pinnedValue {
+  text-align: right;
+  color:  var(--c-muted-1, #888);
+}
+
 .shape {
   margin-top: 12px;
-  flex: 0 0 auto; /* don’t grow or shrink */
+  flex: 0 0 auto;
 }

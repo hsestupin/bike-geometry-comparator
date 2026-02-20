@@ -3,6 +3,8 @@
     --ink-dark: #444444;
     --ink-rim: #e0e0e0;
     --ink-subtle: #dddddd;
+    --ghost-frame: #419505;
+    --ghost-opacity: 0.25;
 }
 
 .frameFill {
@@ -65,3 +67,48 @@
     stroke: #333;
     stroke-width: 2px;
 }
+
+.overlay {
+    position: relative;
+}
+
+.ghostLayer {
+    position: absolute;
+    inset: 0;
+}
+
+.ghostFrame {
+    fill: none;
+    stroke: var(--ghost-frame);
+    stroke-width: 28px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    opacity: var(--ghost-opacity);
+}
+
+.ghostFork {
+    fill: none;
+    stroke: var(--ghost-frame);
+    stroke-width: 24px;
+    stroke-linecap: round;
+    opacity: var(--ghost-opacity);
+}
+
+.ghostTire {
+    stroke: var(--ghost-frame);
+    stroke-width: 10px;
+    fill: none;
+    opacity: var(--ghost-opacity);
+}
+
+.ghostRim {
+    stroke: var(--ghost-frame);
+    stroke-width: 18px;
+    fill: none;
+    opacity: var(--ghost-opacity);
+}
+
+.ghostComponent { display: none; }
+.ghostDimLine { display: none; }
+.ghostJoint { display: none; }
+.ghostText { display: none; }

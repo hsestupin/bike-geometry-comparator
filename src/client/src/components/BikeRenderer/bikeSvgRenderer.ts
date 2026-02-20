@@ -16,7 +16,12 @@ export type BikeShapeCssClasses = {
   text: string
 }
 
-export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssClasses): string {
+export type BikeShapeOptions = {
+  showDimensions?: boolean;
+}
+
+export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssClasses, options?: BikeShapeOptions): string {
+  const showDimensions = options?.showDimensions ?? true;
   const d = calculateGeometry(geometry);
   const p = d.points;
   const v = d.vals;
@@ -39,35 +44,36 @@ export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssC
 
   const svg = `
             <svg viewBox="${CAMERA.x} ${CAMERA.y} ${CAMERA.w} ${CAMERA.h}"
-                 onmousedown="startD(evt)" onmousemove="moveD(evt)" onmouseup="endD(evt)"
-                 onmouseleave="endD(evt)" onwheel="zoom(evt)">
-                <defs>
+                 ${showDimensions ? 'onmousedown="startD(evt)" onmousemove="moveD(evt)" onmouseup="endD(evt)" onmouseleave="endD(evt)" onwheel="zoom(evt)"' : ''}>
+                ${showDimensions ? `<defs>
                     <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
                         <path d="M0,0 L0,6 L9,3 z" fill="#555" />
                     </marker>
                     <marker id="arrowRev" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto" markerUnits="strokeWidth">
                         <path d="M9,0 L9,6 L0,3 z" fill="#555" />
                     </marker>
-                </defs>
+                </defs>` : ''}
 
-                <line x1="-3000" y1="${-(v.groundY)}" x2="3000" y2="${-(v.groundY)}" class="${cssClasses.dimLine}" opacity="0.3"/>
+                ${showDimensions ? `<line x1="-3000" y1="${-(v.groundY)}" x2="3000" y2="${-(v.groundY)}" class="${cssClasses.dimLine}" opacity="0.3"/>` : ''}
 
                 ${drawWheel(p.rearHub, geometry.wheelRadius, cssClasses)}
                 ${drawWheel(p.frontHub, geometry.wheelRadius, cssClasses)}
 
+                ${showDimensions ? `
                 <line x1="${p.seatTubeTopPont.x}" y1="${-(p.seatTubeTopPont.y)}" x2="${p.saddlePoint.x}" y2="${-(p.saddlePoint.y)}" class="${cssClasses.component}"/>
                 <path d="M${p.saddlePoint.x - 40},${-(p.saddlePoint.y)} L${p.saddlePoint.x + 80},${-(p.saddlePoint.y)}" class="${cssClasses.component}" stroke-width="12"/>
 
                 <line x1="${p.headTubeTopPoint.x}" y1="${-(p.headTubeTopPoint.y)}" x2="${p.steerTop.x}" y2="${-(p.steerTop.y)}" class="${cssClasses.component}"/>
                 <line x1="${p.steerTop.x}" y1="${-(p.steerTop.y)}" x2="${p.stemEnd.x}" y2="${-(p.stemEnd.y)}" class="${cssClasses.component}"/>
                 <path d="M${p.stemEnd.x},${-(p.stemEnd.y)} l70,0 l0,70 l-40,0" class="${cssClasses.bar}"/>
+                ` : ''}
 
                 <path d="${framePath}" class="${cssClasses.frameFill}" />
                 <path d="${forkPath}" class="${cssClasses.forkFill}" />
 
-                <circle cx="${p.basePoint.x}" cy="${-(p.basePoint.y)}" r="10" class="${cssClasses.joint}" />
+                ${showDimensions ? `<circle cx="${p.basePoint.x}" cy="${-(p.basePoint.y)}" r="10" class="${cssClasses.joint}" />` : ''}
 
-                <g>
+                ${showDimensions ? `<g>
                     <line x1="${p.basePoint.x}" y1="${-(p.headTubeTopPoint.y)}" x2="${p.headTubeTopPoint.x}" y2="${-(p.headTubeTopPoint.y)}" class="${cssClasses.dimLine}" stroke-dasharray="4,4" opacity="0.6"/>
                     ${arrow(p.basePoint.x, p.basePoint.y, p.basePoint.x, p.headTubeTopPoint.y, 'stack', 0, 20, 'vert', false, cssClasses)}
                     ${arrow(p.basePoint.x, p.headTubeTopPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, 'reach', 100, 20, 'horiz', false, cssClasses)}
@@ -80,7 +86,7 @@ export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssC
                     ${arrow(p.basePoint.x, p.rearHub.y, p.frontHub.x, p.rearHub.y, 'front center', -100, 20, 'horiz', false, cssClasses)}
                     ${angleArc(p.basePoint.x, p.basePoint.y, 100, Math.PI, Math.PI - (geometry.seatTubeAngle * D2R), 'seat tube angle', cssClasses)}
                     ${angleArc(p.frontHub.x, p.rearHub.y, 120, Math.PI, Math.PI - (geometry.headTubeAngle * D2R), 'head tube angle', cssClasses)}
-                </g>
+                </g>` : ''}
             </svg>
         `;
   return svg;
