@@ -137,11 +137,11 @@ export default function BikeDetailsPanel({bike, pinnedBike, onPin, onClose}: Bik
         </div>
       </div>
       <div className={styles.body}>
-        {showComparison && (
+        {showComparison && pinnedBike && (
           <div className={styles.columnHeaders}>
             <span/>
-            <span className={styles.columnLabel}>Selected</span>
-            <span className={styles.columnLabel}>Pinned</span>
+            <span className={styles.columnLabel}>{bike.brand} {bike.model}</span>
+            <span className={styles.columnLabel}>{pinnedBike.brand} {pinnedBike.model}</span>
           </div>
         )}
         <dl className={styles.dl}>
