@@ -1,15 +1,16 @@
-import {DEFAULT_GEOMETRY, Geometry} from "@/components/BikeRenderer/bikeGeometry";
-import {renderBikeShapeSvg} from "@/components/BikeRenderer/bikeSvgRenderer";
+import { DEFAULT_GEOMETRY, Geometry } from "@/components/BikeRenderer/bikeGeometry";
+import { renderBikeShapeSvg } from "@/components/BikeRenderer/bikeSvgRenderer";
 
 import styles from './bikeShape.module.css';
 
 type Props = {
   geometry?: Geometry;
   referenceGeometry?: Geometry;
+  showDimensions?: boolean;
 };
 
 export default function BikeShape(props: Props) {
-  const {geometry = DEFAULT_GEOMETRY, referenceGeometry} = props;
+  const {geometry = DEFAULT_GEOMETRY, referenceGeometry, showDimensions = false} = props;
 
   const foregroundHtml = renderBikeShapeSvg(geometry, {
     component: styles.component,
@@ -21,7 +22,7 @@ export default function BikeShape(props: Props) {
     tire: styles.tire,
     rim: styles.rim,
     text: styles.text
-  });
+  }, {showDimensions});
 
   if (!referenceGeometry) {
     return (
@@ -42,7 +43,7 @@ export default function BikeShape(props: Props) {
     tire: styles.ghostTire,
     rim: styles.ghostRim,
     text: styles.ghostText,
-  }, {showDimensions: false});
+  }, {showDimensions: false, showTubes: false});
 
   return (
     <div className={`${styles.root} ${styles.overlay}`}>

@@ -64,6 +64,7 @@ export function calculateGeometry(
   const wheelBase = Math.hypot(frontHub.x - rearHub.x, frontHub.y - rearHub.y);
   const trail = (geometry.wheelRadius * Math.cos(geometry.headTubeAngle * D2R) - geometry.forkRake) / Math.sin(geometry.headTubeAngle * D2R);
   const frontCenterLength = Math.hypot(frontHub.x - basePoint.x, frontHub.y - basePoint.y);
+  const rearCenterLength = Math.hypot(rearHub.x - basePoint.x, rearHub.y - basePoint.y);
   const effectiveTopTubeLength = Math.hypot(headTubeTopPoint.x - effectiveTopTubeLeftPoint.x, headTubeTopPoint.y - effectiveTopTubeLeftPoint.y);
   const midTTY = (headTubeTopPoint.y + seatTubeTopPont.y) / 2;
   const standover = midTTY - groundY;
@@ -86,6 +87,7 @@ export function calculateGeometry(
       wheelBase: wheelBase,
       trail: trail,
       frontCenterLength: frontCenterLength,
+      rearCenterLength: rearCenterLength,
       effTopTube: effectiveTopTubeLength,
       standover: standover,
       groundY: groundY,

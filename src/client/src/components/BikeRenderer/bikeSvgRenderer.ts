@@ -18,10 +18,12 @@ export type BikeShapeCssClasses = {
 
 export type BikeShapeOptions = {
   showDimensions?: boolean;
+  showTubes?: boolean;
 }
 
 export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssClasses, options?: BikeShapeOptions): string {
   const showDimensions = options?.showDimensions ?? true;
+  const showTubes = options?.showTubes ?? true;
   const d = calculateGeometry(geometry);
   const p = d.points;
   const v = d.vals;
@@ -59,7 +61,7 @@ export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssC
                 ${drawWheel(p.rearHub, geometry.wheelRadius, cssClasses)}
                 ${drawWheel(p.frontHub, geometry.wheelRadius, cssClasses)}
 
-                ${showDimensions ? `
+                ${showTubes ? `
                 <line x1="${p.seatTubeTopPont.x}" y1="${-(p.seatTubeTopPont.y)}" x2="${p.saddlePoint.x}" y2="${-(p.saddlePoint.y)}" class="${cssClasses.component}"/>
                 <path d="M${p.saddlePoint.x - 40},${-(p.saddlePoint.y)} L${p.saddlePoint.x + 80},${-(p.saddlePoint.y)}" class="${cssClasses.component}" stroke-width="12"/>
 
@@ -75,17 +77,17 @@ export function renderBikeShapeSvg(geometry: Geometry, cssClasses: BikeShapeCssC
 
                 ${showDimensions ? `<g>
                     <line x1="${p.basePoint.x}" y1="${-(p.headTubeTopPoint.y)}" x2="${p.headTubeTopPoint.x}" y2="${-(p.headTubeTopPoint.y)}" class="${cssClasses.dimLine}" stroke-dasharray="4,4" opacity="0.6"/>
-                    ${arrow(p.basePoint.x, p.basePoint.y, p.basePoint.x, p.headTubeTopPoint.y, 'stack', 0, 20, 'vert', false, cssClasses)}
-                    ${arrow(p.basePoint.x, p.headTubeTopPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, 'reach', 100, 20, 'horiz', false, cssClasses)}
-                    ${arrow(p.basePoint.x, p.basePoint.y, p.basePoint.x, p.rearHub.y, 'BB drop', -210, 20, 'vert', true, cssClasses)}
-                    ${arrow(p.effectiveTopTubeLeftPoint.x, p.headTubeTopPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, 'toptube length', 140, 20, 'horiz', true, cssClasses)}
-                    ${arrow(p.basePoint.x, p.basePoint.y, p.seatTubeTopPont.x, p.seatTubeTopPont.y, 'seattube length', -60, 20, 'aligned', false, cssClasses)}
-                    ${arrow(p.headTubeBottomPoint.x, p.headTubeBottomPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, 'head tube length', 60, 20, 'aligned', false, cssClasses)}
-                    ${arrow(p.rearHub.x, p.rearHub.y, p.frontHub.x, p.rearHub.y, 'wheelbase', -150, 20, 'horiz', false, cssClasses)}
-                    ${arrow(p.rearHub.x, p.rearHub.y, p.basePoint.x, p.rearHub.y, 'rear center', -100, 20, 'horiz', false, cssClasses)}
-                    ${arrow(p.basePoint.x, p.rearHub.y, p.frontHub.x, p.rearHub.y, 'front center', -100, 20, 'horiz', false, cssClasses)}
-                    ${angleArc(p.basePoint.x, p.basePoint.y, 100, Math.PI, Math.PI - (geometry.seatTubeAngle * D2R), 'seat tube angle', cssClasses)}
-                    ${angleArc(p.frontHub.x, p.rearHub.y, 120, Math.PI, Math.PI - (geometry.headTubeAngle * D2R), 'head tube angle', cssClasses)}
+                    ${arrow(p.basePoint.x, p.basePoint.y, p.basePoint.x, p.headTubeTopPoint.y, formatNumber(geometry.stack), 0, 40, 'vert', false, cssClasses)}
+                    ${arrow(p.basePoint.x, p.headTubeTopPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, formatNumber(geometry.reach), 100, 20, 'horiz', false, cssClasses)}
+                    ${arrow(p.basePoint.x, p.basePoint.y, p.basePoint.x, p.rearHub.y, formatNumber(geometry.bbDrop), -210, 20, 'vert', true, cssClasses)}
+                    ${arrow(p.effectiveTopTubeLeftPoint.x, p.headTubeTopPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, formatNumber(v.effTopTube), 140, 20, 'horiz', true, cssClasses)}
+                    ${arrow(p.basePoint.x, p.basePoint.y, p.seatTubeTopPont.x, p.seatTubeTopPont.y, formatNumber(geometry.seatTubeLength), -60, 40, 'aligned', false, cssClasses)}
+                    ${arrow(p.headTubeBottomPoint.x, p.headTubeBottomPoint.y, p.headTubeTopPoint.x, p.headTubeTopPoint.y, formatNumber(geometry.headTubeLength), 60, 30, 'aligned', false, cssClasses)}
+                    ${arrow(p.rearHub.x, p.rearHub.y, p.frontHub.x, p.rearHub.y, formatNumber(v.wheelBase), -150, 20, 'horiz', false, cssClasses)}
+                    ${arrow(p.rearHub.x, p.rearHub.y, p.basePoint.x, p.rearHub.y, formatNumber(v.rearCenterLength), -100, 20, 'horiz', false, cssClasses)}
+                    ${arrow(p.basePoint.x, p.rearHub.y, p.frontHub.x, p.rearHub.y, formatNumber(v.frontCenterLength), -100, 20, 'horiz', false, cssClasses)}
+                    ${angleArc(p.basePoint.x, p.basePoint.y, 100, Math.PI, Math.PI - (geometry.seatTubeAngle * D2R), formatNumber(geometry.seatTubeLength), cssClasses)}
+                    ${angleArc(p.frontHub.x, p.rearHub.y, 120, Math.PI, Math.PI - (geometry.headTubeAngle * D2R), formatNumber(geometry.headTubeAngle), cssClasses)}
                 </g>` : ''}
             </svg>
         `;
@@ -133,10 +135,12 @@ function arrow(x1: number, y1: number, x2: number, y2: number, label: string, of
   const mx = (px1 + px2) / 2;
   const my = (py1 + py2) / 2;
 
+  const mxText = type == 'vert' || type == 'aligned' ? mx + txtOff : mx;
+
   return `
         ${ext1}${ext2}
         <line x1="${px1}" y1="${py1}" x2="${px2}" y2="${py2}" class="${cssClasses.dimLine}" marker-start="url(#arrowRev)" marker-end="url(#arrow)"/>
-        <text x="${mx}" y="${my - 5}" class="${cssClasses.text}" text-anchor="middle">${label}</text>
+        <text x="${mxText}" y="${my - 5}" class="${cssClasses.text}" text-anchor="middle">${label}</text>
     `;
 }
 
@@ -167,4 +171,8 @@ function drawWheel(center: Point, radius: number, cssClasses: BikeShapeCssClasse
         <circle cx="${center.x}" cy="${cy}" r="${radius - 15}" class="${cssClasses.rim}"/>
         <circle cx="${center.x}" cy="${cy}" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
     `;
+}
+
+function formatNumber(num: number): string {
+  return (Math.round(num * 10) / 10).toString()
 }

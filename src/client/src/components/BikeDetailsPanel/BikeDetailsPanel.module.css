@@ -122,4 +122,5 @@
 .shape {
   margin-top: 12px;
   flex: 0 0 auto;
+  cursor: pointer;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useId, useState } from 'react';
 import Panel from '@/components/Panel/Panel';
+import BikeShapeModal from '@/components/BikeShapeModal/BikeShapeModal';
 import styles from './BikeDetailsPanel.module.css';
 import { BikeDetailedInfo } from "@/types/BikeDetailedInfo";
 import BikeShape from "@/components/BikeRenderer/BikeShape";
@@ -88,6 +89,7 @@ function bikeToGeometry(bike: BikeDetailedInfo): Geometry {
 
 export default function BikeDetailsPanel({bike, pinnedBike, onPin, onClose}: BikeDetailsPanelProps) {
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [shapeModalOpen, setShapeModalOpen] = useState(false);
   const detailsId = useId();
 
   const isPinned = pinnedBike !== null;
@@ -111,6 +113,8 @@ export default function BikeDetailsPanel({bike, pinnedBike, onPin, onClose}: Bik
   const toggleExpanded = () => setExpanded(prev => !prev);
 
   const pinned = showComparison ? pinnedBike : null;
+  const geometry = bikeToGeometry(bike);
+  const referenceGeometry = showComparison ? bikeToGeometry(pinnedBike) : undefined;
 
   return (
     <Panel className={`${styles.panel} ${expanded ? styles.expanded : ''}`} aria-label="BikeShape details">
@@ -168,12 +172,17 @@ export default function BikeDetailsPanel({bike, pinnedBike, onPin, onClose}: Bik
           </div>
         )}
       </div>
-      <div className={styles.shape}>
-        <BikeShape
-          geometry={bikeToGeometry(bike)}
-          referenceGeometry={showComparison ? bikeToGeometry(pinnedBike) : undefined}
-        />
+      <div className={styles.shape} onClick={() => setShapeModalOpen(true)} role="button" tabIndex={0} title="Click to enlarge">
+        <BikeShape geometry={geometry} referenceGeometry={referenceGeometry}/>
       </div>
+      {shapeModalOpen && (
+        <BikeShapeModal
+          title={`${bike.brand} ${bike.model} ${bike.size}`}
+          geometry={geometry}
+          referenceGeometry={referenceGeometry}
+          onClose={() => setShapeModalOpen(false)}
+        />
+      )}
     </Panel>
   );
 }
